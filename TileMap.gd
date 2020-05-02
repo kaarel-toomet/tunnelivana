@@ -34,7 +34,7 @@ block adding checklist
 6.add to blocks dict in HUD script
 """
 
-var breakto = {-1:-1, 0:1, 1:6, 2:0, 3:0, 4:2, 5:4, 6:6, 7:2, 8:0, 9:0,
+var breakto = {255:255, 0:1, 1:6, 2:0, 3:0, 4:2, 5:4, 6:6, 7:2, 8:0, 9:0,
  10:9, 11:1, 12:2, 13:9, 14:1, 15:2, 16:2, 17:2, 18:2}
 #-1:nothimg, 0:sand, 1:sea, 2:grass, 3:box, 4:stone, 5:snow, 6:deep sea
 #7:tree, 8:cactus, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
@@ -48,7 +48,7 @@ func generate(cx,cy):
 		for y in range(chunkH*cy,chunkH*(cy+1)):
 			var gencell = -1
 			#var offsetval = pow(abs(continentnoise.get_noise_2d(x,y)),0.3) * sign(continentnoise.get_noise_2d(x,y))
-			var noiseval = mainnoise.get_noise_2d(x,y)*20+y   #+offsetval*0.6
+			var noiseval = mainnoise.get_noise_2d(x,y)*30+y   #+offsetval*0.6
 			#var heatval = tempnoise.get_noise_2d(x,y) + largetempnoise.get_noise_2d(x,y)
 			#var moistureval = wetnoise.get_noise_2d(x,y) + largewetnoise.get_noise_2d(x,y)
 			#var heatthresholdlow = rand_range(-0.35,-0.15)
@@ -73,8 +73,11 @@ func generate(cx,cy):
 			#	moisture = 2
 			if noiseval > 0: # deep sea
 				gencell = 4
+				if get_cell(x,y-1) == -1:
+					set_cell(x,y,2)
 			if get_cell(x,y) == -1:
 				set_cell(x,y,gencell)
+				
 			if randi() % 1000 == 0:
 				var spawn = kuld.instance()
 				get_parent().get_node("kullad").add_child(spawn)
