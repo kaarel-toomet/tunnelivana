@@ -52,7 +52,10 @@ func _process(delta):
 		position.x = 0
 		position.y = 0
 	if velocity.length() > 0:
-		move_and_slide(velocity*speed/delta)
+		position += velocity*speed
+	if get_parent().get_node("TileMap").get_cell(floor(position[0]/32),floor(position[1]/32)) != -1:
+		get_parent().get_node("TileMap").lammuta(floor(position[0]/32),floor(position[1]/32))
+
 	if health == 0:
 		position = Vector2(0,0)
 		health = 20
