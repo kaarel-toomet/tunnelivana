@@ -34,9 +34,10 @@ block adding checklist
 6.add to blocks dict in HUD script
 """
 
-var breakto = {255:255, 0:1, 1:6, 2:0, 3:0, 4:2, 5:4, 6:6, 7:2, 8:0, 9:0,
- 10:9, 11:1, 12:2, 13:9, 14:1, 15:2, 16:2, 17:2, 18:2}
-#-1:nothimg, 0:sand, 1:sea, 2:grass, 3:box, 4:stone, 5:snow, 6:deep sea
+var breakto = {-1:-1, 0:-1, 1:-1, 2:-1, 3:-1, 4:-1, 5:-1,
+	6:-1, 7:-1, 8:-1, 9:-1, 10:-1, 11:-1, 12:-1, 13:-1,
+	14:-1, 15:-1, 16:-1, 17:-1, 18:-1}
+#255:nothimg, 0:sand, 1:sea, 2:grass, 3:box, 4:stone, 5:snow, 6:deep sea
 #7:tree, 8:cactus, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
 #13:tundra, 14:sea ice, 15:acacia, 16:wood, 17:gold, 18:monster ruins
 
@@ -154,6 +155,7 @@ func load_world():
 func _ready():
 	randomize()
 	
+	
 	#persistencenoise.seed = 434
 	#persistencenoise.octaves = 4
 	#persistencenoise.period = 500
@@ -204,7 +206,8 @@ func _ready():
 	
 	scroll(0,0)
 	load_world()##################################################Rtrrrrre
-
+	fix_invalid_tiles()
+	
 func scroll(sx,sy):
 	#for cx in range(3):
 		#for cy in range(3):
