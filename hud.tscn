@@ -1,0 +1,92 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://hud.gd" type="Script" id=1]
+[ext_resource path="res://assets/hotbar.png" type="Texture" id=2]
+[ext_resource path="res://assets/selslot.png" type="Texture" id=3]
+[ext_resource path="res://Node2D.gd" type="Script" id=4]
+[ext_resource path="res://assets/hp.png" type="Texture" id=5]
+[ext_resource path="res://assets/kuld.png" type="Texture" id=6]
+[ext_resource path="res://assets/kv.png" type="Texture" id=7]
+
+[node name="hud" type="CanvasLayer"]
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -2688.0
+margin_right = 2912.0
+margin_bottom = 64.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="lifetext" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = 246.0
+margin_top = 8.0
+margin_right = 286.0
+margin_bottom = 22.0
+text = "20"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hotbar" type="Sprite" parent="."]
+position = Vector2( 360, 18 )
+scale = Vector2( 2, 2 )
+z_index = 1
+z_as_relative = false
+texture = ExtResource( 2 )
+
+[node name="selslot" type="Sprite" parent="."]
+position = Vector2( 18, 18 )
+scale = Vector2( 2, 2 )
+z_index = 2
+texture = ExtResource( 3 )
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 758, 16 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 5 )
+
+[node name="goldtext" type="Label" parent="."]
+margin_left = 760.0
+margin_top = 24.0
+margin_right = 800.0
+margin_bottom = 40.0
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 760, 32 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 6 )
+
+[node name="kollivtext" type="Label" parent="."]
+margin_left = 760.0
+margin_top = 40.0
+margin_right = 800.0
+margin_bottom = 54.0
+text = "0"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite3" type="Sprite" parent="."]
+position = Vector2( 760, 48 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 7 )
