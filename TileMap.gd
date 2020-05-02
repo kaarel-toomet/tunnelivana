@@ -79,11 +79,11 @@ func generate(cx,cy):
 			if mainnoise.get_noise_2d(x,y-1)*30+y-1 > 0:
 				set_cell(x,y,gencell)
 				
-			if randi() % 1000 == 0:
-				var spawn = kuld.instance()
-				get_parent().get_node("kullad").add_child(spawn)
-				spawn.position = Vector2(x*32,y*32)
-				spawn.scale = Vector2(2,2)
+			#if randi() % 1000 == 0:
+				#var spawn = kuld.instance()
+				#get_parent().get_node("kullad").add_child(spawn)
+				#spawn.position = Vector2(x*32,y*32)
+				#spawn.scale = Vector2(2,2)
 				
 func lammuta(x,y):
 	x = floor(x)

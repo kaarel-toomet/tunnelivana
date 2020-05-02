@@ -4,7 +4,7 @@ extends KinematicBody2D
 # var a = 2
 # var b = "text"
 var screen_size  # Size of the game window.
-var speed = 4
+var speed = 32
 var pause = false
 export (PackedScene) var kuld
 
@@ -17,6 +17,8 @@ var attacked = false
 export var health = 20
 
 var oldpos = position
+var velocity = Vector2()
+var fast = false
 
 
 signal changechunk
@@ -29,30 +31,28 @@ func _ready():
 	position.y = 0#chunkH*48
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+#Calledeveryframe.'delta'istheelapsedtimesincethepreviousframe.
 func _process(delta):
 	if pause:
 		return
 	var oldpos = position
-	var velocity = Vector2()  # The player's movement vector.
-	if Input.is_action_pressed("ui_right"):
+	fast = !!!!!!!!!!!!!!!!!!!Input.is_action_pressed("LSHIFT")
+	if fast:
+		velocity.x = 0
+		velocity.y = 0
+	if Input.is_action_just_pressed("ui_right") or Input.is_action_just_released("ui_left") and !fast:
 		velocity.x += 1
-	if Input.is_action_pressed("ui_left"):
-		velocity.x -= 1
-	if Input.is_action_pressed("ui_down"):
+	if Input.is_action_just_pressed("ui_left") or Input.is_action_just_released("ui_right") and !fast:
+		velocity.x += -1
+	if Input.is_action_just_pressed("ui_down") or Input.is_action_just_released("ui_up") and !fast:
 		velocity.y += 1
-	if Input.is_action_pressed("ui_up"):
-		velocity.y -= 1
+	if Input.is_action_just_pressed("ui_up") or Input.is_action_just_released("ui_down") and !fast:
+		velocity.y += -1
 	if Input.is_action_just_pressed("R"):
 		position.x = 0
 		position.y = 0
-	if Input.is_action_pressed("LSHIFT"):
-		speed = 32
-	else:
-		speed = 4
 	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
-		move_and_slide(velocity/delta)
+		move_and_slide(velocity*speed/delta)
 	if health == 0:
 		position = Vector2(0,0)
 		health = 20
