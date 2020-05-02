@@ -76,7 +76,7 @@ func generate(cx,cy):
 				gencell = 4
 				if get_cell(x,y-1) == -1:
 					set_cell(x,y,2)
-			if get_cell(x,y) == -1:
+			if mainnoise.get_noise_2d(x,y-1)*30+y-1 > 0:
 				set_cell(x,y,gencell)
 				
 			if randi() % 1000 == 0:
