@@ -249,7 +249,7 @@ func _on_hud_ehitadasaab(block):
 		emit_signal("jahsaabehitada")
 
 func _on_hud_lammutadasaab():
-	lammuta(mxy[0],mxy[1])
+	lammuta(get_parent().get_node("hullmyts").position[0]/32,get_parent().get_node("hullmyts").position[1]/32)
 
 
 func _on_main_pause():
