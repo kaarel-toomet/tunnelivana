@@ -2,9 +2,9 @@ extends TileMap
 
 export (PackedScene) var kuld
 
-#var persistencenoise = OpenSimplexNoise.new()#noises used by worldgen
+var gnarlnoise = OpenSimplexNoise.new()#noises used by worldgen
 var mainnoise = OpenSimplexNoise.new()
-#var continentnoise = OpenSimplexNoise.new()
+var continentnoise = OpenSimplexNoise.new()
 #var tempnoise = OpenSimplexNoise.new()
 #var wetnoise = OpenSimplexNoise.new()
 #var largetempnoise = OpenSimplexNoise.new()
@@ -34,11 +34,11 @@ block adding checklist
 6.add to blocks dict in HUD script
 """
 
-var breakto = {-1:-1, 0:-1, 1:-1, 2:-1, 3:-1, 4:-1, 5:-1,
-	6:-1, 7:-1, 8:-1, 9:-1, 10:-1, 11:-1, 12:-1, 13:-1,
-	14:-1, 15:-1, 16:-1, 17:-1, 18:-1}
-var solid = [0,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18]
-#255:nothimg, 0:sand, 1:sea, 2:grass, 3:box, 4:stone, 5:snow, 6:deep sea
+var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
+	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
+	14:0, 15:0, 16:0, 17:0, 18:0}
+var solid = [2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18]
+#255:nothimg, 0:air, 1:sea, 2:grass, 3:box, 4:stone, 5:snow, 6:deep sea
 #7:tree, 8:cactus, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
 #13:tundra, 14:sea ice, 15:acacia, 16:wood, 17:gold, 18:monster ruins
 
@@ -48,37 +48,20 @@ func generate(cx,cy):
 	$generated.set_cell(cx,cy,0)
 	for x in range(chunkW*cx,chunkW*(cx+1)):
 		for y in range(chunkH*cy,chunkH*(cy+1)):
-			var gencell = -1
-			#var offsetval = pow(abs(continentnoise.get_noise_2d(x,y)),0.3) * sign(continentnoise.get_noise_2d(x,y))
-			var noiseval = mainnoise.get_noise_2d(x,y)*30+y   #+offsetval*0.6
-			#var heatval = tempnoise.get_noise_2d(x,y) + largetempnoise.get_noise_2d(x,y)
-			#var moistureval = wetnoise.get_noise_2d(x,y) + largewetnoise.get_noise_2d(x,y)
-			#var heatthresholdlow = rand_range(-0.35,-0.15)
-			#var heatthresholdhigh = rand_range(0.15,0.35)
-			#var moisturethresholdlow = rand_range(-0.35,-0.15)
-			#var moisturethresholdhigh = rand_range(0.15,0.35)
-			#var heat
-			#var moisture
-			#mainnoise.persistence = abs(persistencenoise.get_noise_2d(x+1000,y)*1.2)+0.4
-			#var rivetrval = abs(rivetrnoise.get_noise_2d(x,y))
-			#3if heatval < heatthresholdlow: # make heat simpler
-			#	heat = 0
-			#elif heatval < heatthresholdhigh:
-			#	heat = 1
-		#	else:
-		#		heat = 2
-		##	if moistureval < moisturethresholdlow:# make moisture simpler
-			#	moisture = 0
-		#	elif moistureval < moisturethresholdhigh:
-		#		moisture = 1
-	#		else:
-			#	moisture = 2
+			var gencell = 0
+			
+			var noiseval = mainnoise.get_noise_2d(x,y)
+			
+			noiseval *= (gnarlnoise.get_noise_2d(x,y))*120
+			noiseval += continentnoise.get_noise_2d(x,y)*30
+			noiseval += y
+			
 			if noiseval > 0: # deep sea
 				gencell = 4
-				if mainnoise.get_noise_2d(x,y-1)*30+y-1 < 0:
+				if get_cell(x,y-1) == -1:
 					gencell = 2
 			elif noiseval < 0:
-				gencell = -1
+				gencell = 0
 				if y >= 0:
 					gencell = 1
 					
@@ -95,6 +78,8 @@ func lammuta(x,y):
 	x = floor(x)
 	y = floor(y)
 	if get_cell(x,y) == -1:
+		return
+	if get_cell(x,y) == 0:
 		return
 	set_cell(x,y,breakto[get_cell(x,y)])
 	if randi() % 100 == 0:
@@ -135,6 +120,7 @@ func load_world():
 			var chunk := Vector2()
 			chunk.x = chunks.get_double()
 			chunk.y = chunks.get_double()
+			$generated.set_cellv(chunk,0)
 			for x in range(chunkW):
 				for y in range(chunkH):
 					set_cell(x+chunk.x*chunkW,y+chunk.y*chunkH,chunks.get_8())
@@ -162,20 +148,20 @@ func _ready():
 	randomize()
 	
 	
-	#persistencenoise.seed = 434
-	#persistencenoise.octaves = 4
-	#persistencenoise.period = 500
-	#persistencenoise.persistence = 0.5
-	#persistencenoise.lacunarity = 2
+	gnarlnoise.seed = 434
+	gnarlnoise.octaves = 5
+	gnarlnoise.period = 500
+	gnarlnoise.persistence = 0.5
+	gnarlnoise.lacunarity = 2
 	
-	#continentnoise.seed = 222
-	#continentnoise.octaves = 5
-	#continentnoise.period = 1000
-	#continentnoise.persistence = 0.5
-	#continentnoise.lacunarity = 2
+	continentnoise.seed = 222
+	continentnoise.octaves = 5
+	continentnoise.period = 500
+	continentnoise.persistence = 0.5
+	continentnoise.lacunarity = 2
 	
 	mainnoise.seed = 32
-	mainnoise.octaves = 5
+	mainnoise.octaves = 7
 	mainnoise.period = 40
 	mainnoise.persistence = 0.5
 	mainnoise.lacunarity = 2
@@ -228,18 +214,18 @@ func scroll(sx,sy):
 	wOffsety += sy
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _physics_process(delta):
-	#if paused:
-		#return
-	#var parent = get_parent()
-	#mxy = parent.get_global_mouse_position()/32
-	#var hxy = parent.get_node("hullmyts").position
-	#var space_state = get_world_2d().direct_space_state
-	#var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
+func _physics_process(delta):
+	if paused:
+		return
+	var parent = get_parent()
+	mxy = parent.get_global_mouse_position()/32
+	var hxy = parent.get_node("hullmyts").position
+	var space_state = get_world_2d().direct_space_state
+	var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
 	#if Input.is_action_just_pressed("LCLICK") and (not result):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
-	#if Input.is_action_just_pressed("RCLICK") and (not result):
-		#emit_signal("ehitus")
+	if Input.is_action_just_pressed("RCLICK") and (not result):
+		emit_signal("ehitus")
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:
 		save_world()
