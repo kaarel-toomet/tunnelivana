@@ -8,6 +8,10 @@ signal hit
 signal unhit
 var hxy
 var killable
+
+var yvel = 0
+var onground
+
 export var speed = 3.5
 
 
@@ -23,8 +27,16 @@ func _process(delta):
 		return
 	hxy = get_parent().get_parent().get_node("hullmyts").position
 	var vel =  hxy-position
-	vel = vel.normalized()*speed
+	vel.y = 0
+	vel.x = sign(vel.x)
+	vel = vel*speed
 	move_and_slide(vel/delta)
+	move_and_slide(Vector2(0,yvel)/delta)
+	if not onground:
+		yvel += 1
+	else:
+		yvel = -15
+		onground = false
 	if Input.is_action_just_pressed("LCLICK") and killable:
 		get_parent().get_parent().get_node("hud").kolliv += 1
 		queue_free()
@@ -34,3 +46,11 @@ func _on_Area2D_mouse_entered():
 
 func _on_Area2D_mouse_exited():
 	killable = false
+
+
+func _on_groundboxx_body_entered(body):
+	onground = true
+
+
+func _on_groundboxx_body_exited(body):
+	onground = false
