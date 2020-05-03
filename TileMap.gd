@@ -37,6 +37,7 @@ block adding checklist
 var breakto = {-1:-1, 0:-1, 1:-1, 2:-1, 3:-1, 4:-1, 5:-1,
 	6:-1, 7:-1, 8:-1, 9:-1, 10:-1, 11:-1, 12:-1, 13:-1,
 	14:-1, 15:-1, 16:-1, 17:-1, 18:-1}
+var solid = [0,2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18]
 #255:nothimg, 0:sand, 1:sea, 2:grass, 3:box, 4:stone, 5:snow, 6:deep sea
 #7:tree, 8:cactus, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
 #13:tundra, 14:sea ice, 15:acacia, 16:wood, 17:gold, 18:monster ruins
@@ -74,10 +75,15 @@ func generate(cx,cy):
 			#	moisture = 2
 			if noiseval > 0: # deep sea
 				gencell = 4
-				if get_cell(x,y-1) == -1:
-					set_cell(x,y,2)
-			if mainnoise.get_noise_2d(x,y-1)*30+y-1 > 0:
-				set_cell(x,y,gencell)
+				if mainnoise.get_noise_2d(x,y-1)*30+y-1 < 0:
+					gencell = 2
+			elif noiseval < 0:
+				gencell = -1
+				if y >= 0:
+					gencell = 1
+					
+					
+			set_cell(x,y,gencell)
 				
 			#if randi() % 1000 == 0:
 				#var spawn = kuld.instance()
@@ -222,18 +228,18 @@ func scroll(sx,sy):
 	wOffsety += sy
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
-	if paused:
-		return
-	var parent = get_parent()
-	mxy = parent.get_global_mouse_position()/32
-	var hxy = parent.get_node("hullmyts").position
-	var space_state = get_world_2d().direct_space_state
-	var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
-	if Input.is_action_just_pressed("LCLICK") and (not result):
-		emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
-	if Input.is_action_just_pressed("RCLICK") and (not result):
-		emit_signal("ehitus")
+#func _physics_process(delta):
+	#if paused:
+		#return
+	#var parent = get_parent()
+	#mxy = parent.get_global_mouse_position()/32
+	#var hxy = parent.get_node("hullmyts").position
+	#var space_state = get_world_2d().direct_space_state
+	#var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
+	#if Input.is_action_just_pressed("LCLICK") and (not result):
+		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
+	#if Input.is_action_just_pressed("RCLICK") and (not result):
+		#emit_signal("ehitus")
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:
 		save_world()

@@ -53,7 +53,7 @@ func _process(delta):
 		position.y = 0
 	if velocity.length() > 0:
 		position += velocity*speed
-	if get_parent().get_node("TileMap").get_cell(floor(position[0]/32),floor(position[1]/32)) != -1:
+	if get_parent().get_node("TileMap").get_cell(floor(position[0]/32),floor(position[1]/32)) in get_parent().get_node("TileMap").solid:
 		get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cell((position[0]/32),floor(position[1]/32)))
 
 	if health == 0:
