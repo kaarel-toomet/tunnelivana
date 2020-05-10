@@ -429,8 +429,8 @@ layer = 2
 [node name="kollid" type="Node2D" parent="."]
 
 [node name="kullad" type="Node2D" parent="."]
-[connection signal="pause" from="." to="TileMap" method="_on_main_pause"]
 [connection signal="pause" from="." to="hullmyts" method="_on_main_pause"]
+[connection signal="pause" from="." to="TileMap" method="_on_main_pause"]
 [connection signal="ehitus" from="TileMap" to="hud" method="_on_TileMap_ehitus"]
 [connection signal="jahsaabehitada" from="TileMap" to="hud" method="_on_TileMap_jahsaabehitada"]
 [connection signal="lammutus" from="TileMap" to="hud" method="_on_TileMap_lammutus"]

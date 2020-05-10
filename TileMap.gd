@@ -7,6 +7,7 @@ var mainnoise = OpenSimplexNoise.new()
 var continentnoise = OpenSimplexNoise.new()
 var cavenoise = OpenSimplexNoise.new()
 var cavethicnoise = OpenSimplexNoise.new()
+var treenoise = OpenSimplexNoise.new()
 #var tempnoise = OpenSimplexNoise.new()
 #var wetnoise = OpenSimplexNoise.new()
 #var largetempnoise = OpenSimplexNoise.new()
@@ -88,7 +89,7 @@ func generate(cx,cy):
 					
 			set_cell(x,y,gencell)
 	for x in range(chunkW*cx,chunkW*(cx+1)):
-		if rand_range(0,1) < 0.1:
+		if rand_range(-0.3,1) < treenoise.get_noise_1d(x):
 			for y in range(chunkH*cy,chunkH*(cy+1)):
 				if get_cell(x,y) == 2:
 					var top = (y-randi()%6)-5
@@ -234,6 +235,12 @@ func _ready():
 	cavethicnoise.period = 200
 	cavethicnoise.persistence = 0.5
 	cavethicnoise.lacunarity = 2
+	
+	treenoise.seed = 321
+	treenoise.octaves = 5
+	treenoise.period = 300
+	treenoise.persistence = 0.5
+	treenoise.lacunarity = 2
 	
 	
 	
