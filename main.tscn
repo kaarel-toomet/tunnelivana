@@ -33,16 +33,16 @@ points = PoolVector2Array( 1, 1, 15, 1, 15, 15, 1, 15 )
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 1, 1, 15, 1, 15, 15, 1, 15 )
 
-[sub_resource type="ConvexPolygonShape2D" id=7]
-points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
-
 [sub_resource type="ConvexPolygonShape2D" id=3]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 
-[sub_resource type="ConvexPolygonShape2D" id=6]
+[sub_resource type="ConvexPolygonShape2D" id=4]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 
-[sub_resource type="TileSet" id=4]
+[sub_resource type="ConvexPolygonShape2D" id=5]
+points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+
+[sub_resource type="TileSet" id=6]
 0/name = "qhk"
 0/texture = ExtResource( 6 )
 0/tex_offset = Vector2( 0, 0 )
@@ -81,14 +81,14 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 2/navigation_offset = Vector2( 0, 0 )
 2/shape_offset = Vector2( 0, 0 )
 2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-2/shape = SubResource( 7 )
+2/shape = SubResource( 3 )
 2/shape_one_way = false
 2/shape_one_way_margin = 1.0
 2/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 7 ),
+"shape": SubResource( 3 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 2/z_index = 0
@@ -102,14 +102,14 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 3/navigation_offset = Vector2( 0, 0 )
 3/shape_offset = Vector2( 0, 0 )
 3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-3/shape = SubResource( 3 )
+3/shape = SubResource( 4 )
 3/shape_one_way = false
 3/shape_one_way_margin = 1.0
 3/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 3 ),
+"shape": SubResource( 4 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 3/z_index = 0
@@ -123,14 +123,14 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 4/navigation_offset = Vector2( 0, 0 )
 4/shape_offset = Vector2( 0, 0 )
 4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-4/shape = SubResource( 6 )
+4/shape = SubResource( 5 )
 4/shape_one_way = false
 4/shape_one_way_margin = 1.0
 4/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 6 ),
+"shape": SubResource( 5 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 4/z_index = 0
@@ -345,7 +345,7 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 } ]
 18/z_index = 0
 
-[sub_resource type="CircleShape2D" id=5]
+[sub_resource type="CircleShape2D" id=7]
 radius = 24.0
 
 [node name="main" type="Node2D"]
@@ -355,7 +355,7 @@ koll = ExtResource( 14 )
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2( 1, -1 )
 scale = Vector2( 2, 2 )
-tile_set = SubResource( 4 )
+tile_set = SubResource( 6 )
 cell_size = Vector2( 16, 16 )
 format = 1
 script = ExtResource( 5 )
@@ -396,7 +396,7 @@ editor_draw_limits = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hullmyts/Area2D"]
 position = Vector2( 16, 16 )
-shape = SubResource( 5 )
+shape = SubResource( 7 )
 
 [node name="hud" parent="." instance=ExtResource( 15 )]
 layer = 2
@@ -404,8 +404,8 @@ layer = 2
 [node name="kollid" type="Node2D" parent="."]
 
 [node name="kullad" type="Node2D" parent="."]
-[connection signal="pause" from="." to="TileMap" method="_on_main_pause"]
 [connection signal="pause" from="." to="hullmyts" method="_on_main_pause"]
+[connection signal="pause" from="." to="TileMap" method="_on_main_pause"]
 [connection signal="ehitus" from="TileMap" to="hud" method="_on_TileMap_ehitus"]
 [connection signal="jahsaabehitada" from="TileMap" to="hud" method="_on_TileMap_jahsaabehitada"]
 [connection signal="lammutus" from="TileMap" to="hud" method="_on_TileMap_lammutus"]

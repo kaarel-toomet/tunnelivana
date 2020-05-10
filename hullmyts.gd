@@ -36,7 +36,11 @@ func _process(delta):
 	if pause:
 		return
 	var oldpos = position
-	fast = !!!!!!!!!!!!!!!!!!!Input.is_action_pressed("LSHIFT")
+	fast = !!!Input.is_action_pressed("LSHIFT")
+	if get_parent().get_node("TileMap").get_cell(floor(position[0]/32),floor(position[1]/32)) in get_parent().get_node("TileMap").solid:
+		get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cell((position[0]/32),floor(position[1]/32)))
+		fast = true
+		#velocity = -velocity
 	if fast:
 		velocity.x = 0
 		velocity.y = 0
@@ -53,9 +57,7 @@ func _process(delta):
 		position.y = 0
 	if velocity.length() > 0:
 		position += velocity*speed
-	if get_parent().get_node("TileMap").get_cell(floor(position[0]/32),floor(position[1]/32)) in get_parent().get_node("TileMap").solid:
-		get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cell((position[0]/32),floor(position[1]/32)))
-
+	
 	if health == 0:
 		position = Vector2(0,0)
 		health = 20

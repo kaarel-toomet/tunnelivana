@@ -5,6 +5,8 @@ export (PackedScene) var kuld
 var gnarlnoise = OpenSimplexNoise.new()#noises used by worldgen
 var mainnoise = OpenSimplexNoise.new()
 var continentnoise = OpenSimplexNoise.new()
+var cavenoise = OpenSimplexNoise.new()
+var cavethicnoise = OpenSimplexNoise.new()
 #var tempnoise = OpenSimplexNoise.new()
 #var wetnoise = OpenSimplexNoise.new()
 #var largetempnoise = OpenSimplexNoise.new()
@@ -62,13 +64,15 @@ func generate(cx,cy):
 			anoiseval += continentnoise.get_noise_1d(x)*30
 			anoiseval += y-1
 			
-			if noiseval > 0: # deep sea
+			if noiseval > 0: # stone/grass/sand
 				gencell = 4
 				if anoiseval < 0:
 					gencell = 2
 					if y >= -1:
 						gencell = 3
-			elif noiseval < 0:
+				if abs(cavenoise.get_noise_2d(x,y)) < cavethicnoise.get_noise_2d(x,y)*0.15+0.01:
+					gencell = 0
+			elif noiseval < 0: # air
 				gencell = 0
 				if y >= 0:
 					gencell = 1
@@ -174,35 +178,19 @@ func _ready():
 	mainnoise.persistence = 0.5
 	mainnoise.lacunarity = 2
 	
-	#tempnoise.seed = 10
-	#tempnoise.octaves = 5	
-	#tempnoise.period = 300
-	#tempnoise.persistence = 0.5		
-	#tempnoise.lacunarity = 2
-		
-	#wetnoise.seed = 123
-	#wetnoise.octaves = 5
-	#wetnoise.period = 300
-	#wetnoise.persistence = 0.5
-	#wetnoise.lacunarity = 2
+	cavenoise.seed = 39
+	cavenoise.octaves = 7
+	cavenoise.period = 70
+	cavenoise.persistence = 0.5
+	cavenoise.lacunarity = 2
 	
-	#largetempnoise.seed = 100
-	#largetempnoise.octaves = 5
-	#largetempnoise.period = 4000
-	#largetempnoise.persistence = 0.5
-	#largetempnoise.lacunarity = 2
+	cavethicnoise.seed = 123
+	cavethicnoise.octaves = 7
+	cavethicnoise.period = 120
+	cavethicnoise.persistence = 0.5
+	cavethicnoise.lacunarity = 2
 	
-	#largewetnoise.seed = 1234
-	#largewetnoise.octaves = 5
-	#largewetnoise.period = 4000
-	#largewetnoise.persistence = 0.5
-	#largewetnoise.lacunarity = 2
 	
-	#rivetrnoise.seed = 7
-	#rivetrnoise.octaves = 9
-	#rivetrnoise.period = 500
-	#rivetrnoise.persistence = 0.5
-	#rivetrnoise.lacunarity = 2
 	
 	scroll(0,0)
 	load_world()##################################################Rtrrrrre
