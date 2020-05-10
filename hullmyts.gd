@@ -4,7 +4,7 @@ extends KinematicBody2D
 # var a = 2
 # var b = "text"
 var screen_size  # Size of the game window.
-var speed = 32
+var speed = 6
 var pause = false
 export (PackedScene) var kuld
 
@@ -23,6 +23,8 @@ export var health = 20
 
 var oldpos = position
 var fast = false
+var yvel = 0
+var onG = false
 
 
 signal changechunk
@@ -46,15 +48,42 @@ func _process(delta):
 		fast = false
 	fast = true
 	
-	
 	for i in get_slide_count():
-		print(i)
 		var c = get_slide_collision(i)
-		print(c.normal)
+		var tilemap = get_parent().get_node("TileMap")
+		#if c.collider != tilemap:
+			#return
 		var pos = Vector2(floor((position[0]+16)/32),floor((position[1]+16)/32))-c.normal
-		if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
-			get_parent().get_node("TileMap").pcol = pos
-			get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cellv(pos))
+		
+		tilemap.pcol = pos
+		#print(c.normal)
+		if c.normal.x == -1 and right:
+			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
+			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
+			right = false
+			#speed = 0
+		elif c.normal.x == 1 and left:
+			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
+			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
+			left = false
+			#speed = 0
+		elif c.normal.y == -1 and down:
+			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
+			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
+			yvel = 0#
+			down = false
+			#speed = 0
+		elif c.normal.y == 1 and up:
+			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
+			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
+			yvel = 0#
+			up = false
+		else:
+			speed = 6
+		#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
+			#get_parent().get_node("TileMap").pcol = pos
+			#get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cellv(pos))
+	
 	
 		#fast = false
 		
@@ -75,16 +104,25 @@ func _process(delta):
 		move_and_slide(Vector2(-speed,0)/delta)
 	if down:
 		move_and_slide(Vector2(0,speed)/delta)
-	if up:
-		move_and_slide(Vector2(0,-speed)/delta)
-		
+	if up and onG:
+		yvel = -20#move_and_slide(Vector2(0,-speed)/delta)
+		onG = false
+	move_and_slide(Vector2(0,yvel)/delta)
+	#print(onG)
+	
+	if not onG:
+		yvel += 1
+	else:
+		yvel = 0
+				
 	if Input.is_action_just_pressed("R"):
 		position.x = 0
-		position.y = 0
+		position.y = -256
 	
 	if health == 0:
 		position = Vector2(0,0)
 		health = 20
+		
 	var cx = floor((position.x / 32) / chunkW)
 	var cy = floor((position.y / 32) / chunkH)
 	var ocx = floor((oldpos.x / 32) / chunkW)
@@ -101,6 +139,8 @@ func _process(delta):
 		if attacked:
 			immunity = 0.5
 			health -= 1
+	
+	
 	get_parent().get_node("hud/lifetext").text = str(health)
 
 
@@ -122,3 +162,14 @@ func _on_Area2D_area_entered(area):
 
 func _on_Area2D_area_exited(area):
 	attacked = false
+
+
+func _on_Area2D2_body_entered(body):
+	if body == get_parent().get_node("TileMap"):
+		onG = true
+	
+
+
+func _on_Area2D2_body_exited(body):
+	if body == get_parent().get_node("TileMap"):
+		onG = false

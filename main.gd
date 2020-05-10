@@ -18,7 +18,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("P"):
 		emit_signal("pause")
 		paused = !paused
-	if randi() % 200 == 0 and not paused:
+	if randi() % 400 == 0 and not paused:
 		var spawn = koll.instance()
 		$kollid.add_child(spawn)
 		var sxmax = $hullmyts.position.x+(1.5*$TileMap.chunkW*32)

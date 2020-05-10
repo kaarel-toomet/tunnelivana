@@ -12,7 +12,7 @@ var killable
 var yvel = 0
 var onground
 
-export var speed = 3.5
+export var speed = 2.5
 
 
 # Called when the node enters the scene tree for the first time.
@@ -35,7 +35,7 @@ func _process(delta):
 	if not onground:
 		yvel += 1
 	else:
-		yvel = -15
+		yvel = -12
 		onground = false
 	if Input.is_action_just_pressed("LCLICK") and killable:
 		get_parent().get_parent().get_node("hud").kolliv += 1
