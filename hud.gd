@@ -129,12 +129,15 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("craft"):
 		var block = inventory[select]
-		if block == 7 or block == 10 or block == 12 or block == 15:
+		if block == 5:# or block == 10 or block == 12 or block == 15:
 			amounts[select] -= 1
 			get(16)
-		if block == 16:
+		if block == 7:
 			amounts[select] -= 1
-			get(3)
+			get_parent().get_node("hullmyts").health += 1
+		#if block == 16:
+			#amounts[select] -= 1
+			#get(3)
 			
 	if kuld >= 10 and (empty < 20 or inventory.has(17)):
 		kuld -= 10

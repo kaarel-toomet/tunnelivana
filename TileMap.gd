@@ -42,9 +42,9 @@ block adding checklist
 var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
 	14:0, 15:0, 16:0, 17:0, 18:0}
-var solid = [2,3,4,5,6]
+var solid = [2,3,4,5,6,7,16]
 #255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
-#7:tree, 8:cactus, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
+#7:coal bush, 8:cactus, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
 #13:tundra, 14:sea ice, 15:acacia, 16:wood, 17:gold, 18:monster ruins
 
 func generate(cx,cy):
@@ -99,6 +99,9 @@ func generate(cx,cy):
 							if dist[0]+dist[1] < 3+rand_range(-0.5,1.5) and j < top+1:
 								set_cell(i,j,6)
 						if j >= top: set_cell(x,j,5)
+		for y in range(chunkH*cy,chunkH*(cy+1)):
+			if rand_range(0,1) < 0.1 and get_cell(x,y+1) == 4 and get_cell(x,y) == 0:
+				set_cell(x,y,7)
 				
 			#if randi() % 1000 == 0:
 				#var spawn = kuld.instance()
