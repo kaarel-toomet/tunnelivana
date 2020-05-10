@@ -41,8 +41,8 @@ block adding checklist
 var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
 	14:0, 15:0, 16:0, 17:0, 18:0}
-var solid = [2,3,4,5,7,8,9,10,11,12,13,14,15,16,17,18]
-#255:nothimg, 0:air, 1:sea, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
+var solid = [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+#255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
 #7:tree, 8:cactus, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
 #13:tundra, 14:sea ice, 15:acacia, 16:wood, 17:gold, 18:monster ruins
 
@@ -70,6 +70,10 @@ func generate(cx,cy):
 				gencell = 4
 				if anoiseval < 0:
 					gencell = 2
+					#if true:#rand_range(0,1) < 0.1:
+						#gencell = 5
+						#for j in range(y-randi()%10-2,y-1):
+							#set_cell(x,y,5)
 					if y >= -1:
 						gencell = 3
 				if abs(cavenoise.get_noise_2d(x,y)) < cavethicnoise.get_noise_2d(x,y)*0.15+0.01:
@@ -78,9 +82,22 @@ func generate(cx,cy):
 				gencell = 0
 				if y >= 0:
 					gencell = 1
+				#if get_cell(x,y+1) == 2:# and rand_range(0,1) < 0.1:
+					#gencell= 5
 					
 					
 			set_cell(x,y,gencell)
+	for x in range(chunkW*cx,chunkW*(cx+1)):
+		if rand_range(0,1) < 0.1:
+			for y in range(chunkH*cy,chunkH*(cy+1)):
+				if get_cell(x,y) == 2:
+					var top = (y-randi()%6)-5
+					for j in range(top-5,y):
+						for i in range(x-5,x+5):
+							var dist = Vector2(abs(x-i),abs(j-(top)))
+							if dist[0]+dist[1] < 3+rand_range(-0.5,1.5) and j < top+1:
+								set_cell(i,j,6)
+						if j >= top: set_cell(x,j,5)
 				
 			#if randi() % 1000 == 0:
 				#var spawn = kuld.instance()
@@ -102,6 +119,17 @@ func lammuta(x,y):
 		spawn.position = Vector2(x*32+16,y*32+16)
 		spawn.scale = Vector2(2,2)
 
+#func save_chunk(cx,cy): ##cx and cy are in chunks
+	#var chunks := File.new()
+	#chunks.open("res://world/chunks.gwrld",File.WRITE)
+	#chunks.store_double(cx)
+	#chunks.store_double(cy)
+	#for chunk in $generated.get_used_cells():
+		#if chunk.x == cx and chunk.y == cy:
+			#for x in range(chunkW):
+				#for y in range(chunkH):
+					#chunks.store_8(get_cell(x+cx*chunkW, y+cy*chunkH))
+	#chunks.close
 
 func save_world():
 	var chunks := File.new()
@@ -124,6 +152,21 @@ func save_world():
 	#data.store_double(get_parent().get_node("hullmyts").position[0])
 	#data.store_double(get_parent().get_node("hullmyts").position[1])
 	data.close()
+	
+#func load_chunk(cx,cy): ##cx and cy are in chunks
+#	var chunks := File.new()
+	#chunks.open("res://world/chunks.gwrld",File.READ)
+	
+	#if chunks.file_exists("res://world/chunks.gwrld"):
+		#while chunks.get_position() != chunks.get_len():
+			##var chunk := Vector2()
+			#chunk.x = chunks.get_double()
+			#chunk.y = chunks.get_double()
+			#$generated.set_cellv(chunk,0)
+			#for x in range(chunkW):
+				#for y in range(chunkH):
+					#set_cell(x+chunk.x*chunkW,y+chunk.y*chunkH,chunks.get_8())
+	#chunks.close
 	
 func load_world():
 	var chunks := File.new()
@@ -182,13 +225,13 @@ func _ready():
 	
 	cavenoise.seed = 39
 	cavenoise.octaves = 7
-	cavenoise.period = 70
+	cavenoise.period = 100
 	cavenoise.persistence = 0.5
 	cavenoise.lacunarity = 2
 	
 	cavethicnoise.seed = 123
 	cavethicnoise.octaves = 7
-	cavethicnoise.period = 120
+	cavethicnoise.period = 200
 	cavethicnoise.persistence = 0.5
 	cavethicnoise.lacunarity = 2
 	

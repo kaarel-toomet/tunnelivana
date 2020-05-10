@@ -152,6 +152,7 @@ func _on_TileMap_ehitus():
 
 func _on_TileMap_lammutus(blockbroken):
 	if blockbroken == 0: return
+	if blockbroken == 1: return
 	if empty < 20 or inventory.has(blockbroken):
 		if blockbroken == 6:
 			return
