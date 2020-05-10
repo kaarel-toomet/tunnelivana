@@ -27,8 +27,9 @@ func _process(delta):
 		var symax = $hullmyts.position.y+(1.5*$TileMap.chunkH*32)
 		var symin = $hullmyts.position.y-(1.5*$TileMap.chunkH*32)
 		var sy = (randi() % int((symax-symin)) + symin)
-		while $TileMap.get_cell(sx/32,sy/32) in $TileMap.solid:
-			sx = (randi() % int((sxmax-sxmin)) + sxmin)
-			sy = (randi() % int((symax-symin)) + symin)
+		sx = (randi() % int((sxmax-sxmin)) + sxmin)
+		sy = (randi() % int((symax-symin)) + symin)
+		if $TileMap.get_cell(sx/32,sy/32) in $TileMap.solid:
+			spawn.queue_free()
 		spawn.position = Vector2(sx,sy)
 		spawn.scale = Vector2(2,2)

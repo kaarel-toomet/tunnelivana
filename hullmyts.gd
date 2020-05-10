@@ -8,6 +8,11 @@ var speed = 32
 var pause = false
 export (PackedScene) var kuld
 
+var left = false
+var right = false
+var up = false
+var down = false
+
 var chunkW = 15 # change these with the chunk sizes in tilemap.gd
 var chunkH = 10
 
@@ -17,7 +22,6 @@ var attacked = false
 export var health = 20
 
 var oldpos = position
-var velocity = Vector2()
 var fast = false
 
 
@@ -36,27 +40,38 @@ func _process(delta):
 	if pause:
 		return
 	var oldpos = position
-	fast = !!!Input.is_action_pressed("LSHIFT")
+	if Input.is_action_just_pressed("LSHIFT"):
+		fast = true
+	if Input.is_action_just_released("LSHIFT"):
+		fast = false
+	
 	if get_parent().get_node("TileMap").get_cell(floor(position[0]/32),floor(position[1]/32)) in get_parent().get_node("TileMap").solid:
 		get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cell((position[0]/32),floor(position[1]/32)))
-		fast = true
-		#velocity = -velocity
-	if fast:
-		velocity.x = 0
-		velocity.y = 0
-	if Input.is_action_just_pressed("ui_right") or Input.is_action_just_released("ui_left") and !fast:
-		velocity.x += 1
-	if Input.is_action_just_pressed("ui_left") or Input.is_action_just_released("ui_right") and !fast:
-		velocity.x += -1
-	if Input.is_action_just_pressed("ui_down") or Input.is_action_just_released("ui_up") and !fast:
-		velocity.y += 1
-	if Input.is_action_just_pressed("ui_up") or Input.is_action_just_released("ui_down") and !fast:
-		velocity.y += -1
+		fast = false
+		
+	if not fast:
+		left = Input.is_action_just_pressed("ui_left")
+		right = Input.is_action_just_pressed("ui_right")
+		up = Input.is_action_just_pressed("ui_up")
+		down = Input.is_action_just_pressed("ui_down")
+	else:
+		left = Input.is_action_pressed("ui_left")
+		right = Input.is_action_pressed("ui_right")
+		up = Input.is_action_pressed("ui_up")
+		down = Input.is_action_pressed("ui_down")
+		
+	if right:
+		position.x += speed
+	if left:
+		position.x += -speed
+	if down:
+		position.y += speed
+	if up:
+		position.y += -speed
+		
 	if Input.is_action_just_pressed("R"):
 		position.x = 0
 		position.y = 0
-	if velocity.length() > 0:
-		position += velocity*speed
 	
 	if health == 0:
 		position = Vector2(0,0)
