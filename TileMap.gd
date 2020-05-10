@@ -19,6 +19,8 @@ export var chunkH = 10
 var wOffsetx = -1 # activewindow offset, top-left chunk in tiles
 var wOffsety = -1
 
+var pcol = Vector2()
+
 
 signal lammutus(blockbroken)
 signal ehitus
@@ -30,7 +32,7 @@ var paused = false
 block adding checklist
 1.add image to assets folder
 2.add to tileset
-3.add to breakto
+3.add to breakto and solid
 4.add to ID comment
 5.add image and image load to HUD script
 6.add to blocks dict in HUD script
@@ -237,7 +239,7 @@ func _on_hud_ehitadasaab(block):
 		emit_signal("jahsaabehitada")
 
 func _on_hud_lammutadasaab():
-	lammuta(get_parent().get_node("hullmyts").position[0]/32,get_parent().get_node("hullmyts").position[1]/32)
+	lammuta(pcol[0],pcol[1])
 
 
 func _on_main_pause():

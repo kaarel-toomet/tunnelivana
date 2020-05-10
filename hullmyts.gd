@@ -44,10 +44,19 @@ func _process(delta):
 		fast = true
 	if Input.is_action_just_released("LSHIFT"):
 		fast = false
+	fast = true
 	
-	if get_parent().get_node("TileMap").get_cell(floor(position[0]/32),floor(position[1]/32)) in get_parent().get_node("TileMap").solid:
-		get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cell((position[0]/32),floor(position[1]/32)))
-		fast = false
+	
+	for i in get_slide_count():
+		print(i)
+		var c = get_slide_collision(i)
+		print(c.normal)
+		var pos = Vector2(floor((position[0]+16)/32),floor((position[1]+16)/32))-c.normal
+		if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
+			get_parent().get_node("TileMap").pcol = pos
+			get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cellv(pos))
+	
+		#fast = false
 		
 	if not fast:
 		left = Input.is_action_just_pressed("ui_left")
@@ -61,13 +70,13 @@ func _process(delta):
 		down = Input.is_action_pressed("ui_down")
 		
 	if right:
-		position.x += speed
+		move_and_slide(Vector2(speed,0)/delta)
 	if left:
-		position.x += -speed
+		move_and_slide(Vector2(-speed,0)/delta)
 	if down:
-		position.y += speed
+		move_and_slide(Vector2(0,speed)/delta)
 	if up:
-		position.y += -speed
+		move_and_slide(Vector2(0,-speed)/delta)
 		
 	if Input.is_action_just_pressed("R"):
 		position.x = 0
