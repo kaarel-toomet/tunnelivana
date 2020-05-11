@@ -19,7 +19,7 @@ var chunkH = 10
 var immunity = 0
 var attacked = false
 
-export var health = 20
+export var health = 10
 
 var oldpos = position
 var fast = false
@@ -139,6 +139,7 @@ func _process(delta):
 		if attacked:
 			immunity = 0.5
 			health -= 1
+	health = min(health,10)
 	
 	
 	get_parent().get_node("hud/lifetext").text = str(health)

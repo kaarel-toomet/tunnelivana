@@ -46,10 +46,10 @@ block adding checklist
 var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
 	14:0, 15:0, 16:0, 17:0, 18:0}
-var solid = [2,3,4,5,6,7,8,10,16,17,18]
+var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18]
 #255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
-#7:coal bush, 8:pear, 9:water flowing, 10:tree seed, 11:peat moss, 12:jungle
-#13:tundra, 14:sea ice, 15:acacia, 16:wood, 17:gold, 18:monster ruins
+#7:coal bush, 8:pear, 9:water flowing, 10:tree seed, 11:unused, 12:aluminium
+#13:bauxite, 14:unused, 15:acacia, 16:wood, 17:gold, 18:monster ruins
 
 func generate(cx,cy):
 	if $generated.get_cell(cx,cy) != -1:
@@ -60,19 +60,22 @@ func generate(cx,cy):
 			var gencell = 0
 			
 			var noiseval = mainnoise.get_noise_2d(x,y)
+			var noisevaladd = max(y,min(-y-99,y+101))
+			var anoisevaladd = max(y-1,min(-y-98,y+100))
 			
 			noiseval *= (gnarlnoise.get_noise_1d(x))*120
 			noiseval += continentnoise.get_noise_1d(x)*30
-			noiseval += y
+			noiseval += noisevaladd
 			
 			var anoiseval = mainnoise.get_noise_2d(x,y-1)
 			
 			anoiseval *= (gnarlnoise.get_noise_1d(x))*120
 			anoiseval += continentnoise.get_noise_1d(x)*30
-			anoiseval += y-1
+			anoiseval += anoisevaladd
 			
 			if noiseval > 0: # stone/grass/sand
 				gencell = 4
+				if y < -50 and rand_range(0,1) < 0.02: gencell = 13
 				if anoiseval < 0:
 					gencell = 2
 					#if true:#rand_range(0,1) < 0.1:

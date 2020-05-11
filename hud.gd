@@ -138,6 +138,9 @@ func _process(delta):
 		if block == 6 and amounts[select] >= 7:
 			amounts[select] -= 7
 			collect(10)
+		if block == 13:# or block == 10 or block == 12 or block == 15:
+			amounts[select] -= 1
+			collect(12)
 		#if block == 16:
 			#amounts[select] -= 1
 			#collect(3)
