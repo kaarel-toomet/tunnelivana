@@ -27,16 +27,21 @@ func _process(delta):
 		return
 	hxy = get_parent().get_parent().get_node("hullmyts").position
 	var vel =  hxy-position
-	vel.y = 0
+	#vel.y = yvel
 	vel.x = sign(vel.x)
 	vel = vel*speed
+	vel.y = yvel
 	move_and_slide(vel/delta)
-	move_and_slide(Vector2(0,yvel)/delta)
+	#move_and_slide(Vector2(0,yvel)/delta)
+	for i in get_slide_count():
+		var c = get_slide_collision(i)
+		#print(c.normal)
+		if onground and c.normal.x != 0:
+			print(c.normal)
+			yvel = -10
+			#onground = false
 	if not onground:
 		yvel += 1
-	else:
-		yvel = -12
-		onground = false
 	if Input.is_action_just_pressed("LCLICK") and killable:
 		get_parent().get_parent().get_node("hud").kolliv += 1
 		queue_free()
@@ -49,8 +54,12 @@ func _on_Area2D_mouse_exited():
 
 
 func _on_groundboxx_body_entered(body):
-	onground = true
+	if body != self:
+		onground = true
+		print(body)
 
 
 func _on_groundboxx_body_exited(body):
-	onground = false
+	if body != self:
+		onground = false
+		print('rf ',body)

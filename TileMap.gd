@@ -21,6 +21,7 @@ var wOffsetx = -1 # activewindow offset, top-left chunk in tiles
 var wOffsety = -1
 
 var pcol = Vector2()
+var timer = 0
 
 
 signal lammutus(blockbroken)
@@ -251,7 +252,7 @@ func _ready():
 	load_world()##################################################Rtrrrrre
 	fix_invalid_tiles()
 	
-func scroll(sx,sy):
+func scroll(sx,sy): # sx and sy in chunks
 	#for cx in range(3):
 		#for cy in range(3):
 			#for x in range(chunkW*(cx+wOffsetx),chunkW*(cx+wOffsetx+1)):
@@ -268,6 +269,7 @@ func scroll(sx,sy):
 func _physics_process(delta):
 	if paused:
 		return
+	timer += delta
 	var parent = get_parent()
 	mxy = parent.get_global_mouse_position()/32
 	var hxy = parent.get_node("hullmyts").position
@@ -277,6 +279,17 @@ func _physics_process(delta):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
 	if Input.is_action_just_pressed("RCLICK") and (not result):
 		emit_signal("ehitus")
+	if timer >= 1:
+		timer = 0
+		for x in range(wOffsetx*chunkW,wOffsetx*chunkW+chunkW*3):
+			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
+				if get_cell(x,y) == 1:
+					if get_cell(x-1,y) == 0:
+						set_cell(x-1,y,1)
+					if get_cell(x+1,y) == 0:
+						set_cell(x+1,y,1)
+					if get_cell(x,y+1) == 0:
+						set_cell(x,y+1,1)
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:
 		save_world()
@@ -287,7 +300,7 @@ func _on_hullmyts_changechunk(changex, changey):
 
 
 func _on_hud_ehitadasaab(block):
-	if get_cell(floor(mxy[0]),floor(mxy[1])) == breakto[block]:
+	if !solid.has(get_cell(floor(mxy[0]),floor(mxy[1]))):
 		set_cell(floor(mxy[0]),floor(mxy[1]),block)
 		emit_signal("jahsaabehitada")
 
