@@ -78,7 +78,7 @@ func _ready():
 	hotbar.load("assets/hotbar.png")
 	
 
-func get(item):
+func collect(item):
 	if inventory.has(item):
 		amounts[inventory.find(item)] += 1
 	else:
@@ -131,20 +131,20 @@ func _process(delta):
 		var block = inventory[select]
 		if block == 5:# or block == 10 or block == 12 or block == 15:
 			amounts[select] -= 1
-			get(16)
-		if block == 7:
+			collect(16)
+		if block == 7 or block == 8:
 			amounts[select] -= 1
 			get_parent().get_node("hullmyts").health += 1
 		#if block == 16:
 			#amounts[select] -= 1
-			#get(3)
+			#collect(3)
 			
 	if kuld >= 10 and (empty < 20 or inventory.has(17)):
 		kuld -= 10
-		get(17)
+		collect(17)
 	if kolliv >= 10 and (empty < 20 or inventory.has(18)):
 		kolliv -= 10
-		get(18)
+		collect(18)
 			
 
 

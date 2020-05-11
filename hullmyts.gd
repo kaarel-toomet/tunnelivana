@@ -158,6 +158,8 @@ func _on_Area2D_area_entered(area):
 	if area.get_parent().get_parent() == get_parent().get_node("kullad"):
 		area.get_parent().queue_free()
 		get_parent().get_node("hud").kuld += 1
+	if area.get_parent() == get_parent().get_node("tulepallid"):
+		attacked = true
 
 
 func _on_Area2D_area_exited(area):
