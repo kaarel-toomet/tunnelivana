@@ -45,7 +45,7 @@ var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	14:0, 15:0, 16:0, 17:0, 18:0}
 var solid = [2,3,4,5,6,7,8,16]
 #255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
-#7:coal bush, 8:pear, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
+#7:coal bush, 8:pear, 9:water flowing, 10:spruce, 11:peat moss, 12:jungle
 #13:tundra, 14:sea ice, 15:acacia, 16:wood, 17:gold, 18:monster ruins
 
 func generate(cx,cy):
@@ -279,17 +279,21 @@ func _physics_process(delta):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
 	if Input.is_action_just_pressed("RCLICK") and (not result):
 		emit_signal("ehitus")
-	if timer >= 1:
+	if timer >= 0.5:
 		timer = 0
 		for x in range(wOffsetx*chunkW,wOffsetx*chunkW+chunkW*3):
 			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
 				if get_cell(x,y) == 1:
 					if get_cell(x-1,y) == 0:
-						set_cell(x-1,y,1)
+						set_cell(x-1,y,9)
 					if get_cell(x+1,y) == 0:
-						set_cell(x+1,y,1)
+						set_cell(x+1,y,9)
 					if get_cell(x,y+1) == 0:
-						set_cell(x,y+1,1)
+						set_cell(x,y+1,9)
+		for x in range(wOffsetx*chunkW,wOffsetx*chunkW+chunkW*3):
+			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
+				if get_cell(x,y) == 9:
+					set_cell(x,y,1)
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:
 		save_world()
