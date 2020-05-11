@@ -135,6 +135,9 @@ func _process(delta):
 		if block == 7 or block == 8:
 			amounts[select] -= 1
 			get_parent().get_node("hullmyts").health += 1
+		if block == 6 and amounts[select] >= 7:
+			amounts[select] -= 7
+			collect(10)
 		#if block == 16:
 			#amounts[select] -= 1
 			#collect(3)

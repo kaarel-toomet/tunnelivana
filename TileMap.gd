@@ -43,9 +43,9 @@ block adding checklist
 var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
 	14:0, 15:0, 16:0, 17:0, 18:0}
-var solid = [2,3,4,5,6,7,8,16]
+var solid = [2,3,4,5,6,7,8,10,16,17,18]
 #255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
-#7:coal bush, 8:pear, 9:water flowing, 10:spruce, 11:peat moss, 12:jungle
+#7:coal bush, 8:pear, 9:water flowing, 10:tree seed, 11:peat moss, 12:jungle
 #13:tundra, 14:sea ice, 15:acacia, 16:wood, 17:gold, 18:monster ruins
 
 func generate(cx,cy):
@@ -90,7 +90,7 @@ func generate(cx,cy):
 					
 			set_cell(x,y,gencell)
 	for x in range(chunkW*cx,chunkW*(cx+1)):
-		if rand_range(-0.3,1) < treenoise.get_noise_1d(x):
+		if rand_range(-0.1,1) < treenoise.get_noise_1d(x):
 			for y in range(chunkH*cy,chunkH*(cy+1)):
 				if get_cell(x,y) == 2:
 					var top = (y-randi()%6)-5
@@ -294,6 +294,15 @@ func _physics_process(delta):
 			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
 				if get_cell(x,y) == 9:
 					set_cell(x,y,1)
+				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.03:
+					var top = (y-randi()%6)-5
+					for j in range(top-5,y):
+						for i in range(x-5,x+5):
+							var dist = Vector2(abs(x-i),abs(j-(top)))
+							if dist[0]+dist[1] < 3+rand_range(-0.5,1.5) and j < top+1:
+								set_cell(i,j,6)
+						if j >= top: set_cell(x,j,5)
+					
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:
 		save_world()
