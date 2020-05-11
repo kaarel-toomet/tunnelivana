@@ -17,11 +17,14 @@ var treenoise = OpenSimplexNoise.new()
 export var chunkW = 15 #when changing these, change the numbers in hullmyts's script, that are used in the changechunk signal
 export var chunkH = 10
 
+var sed = 0
+
 var wOffsetx = -1 # activewindow offset, top-left chunk in tiles
 var wOffsety = -1
 
 var pcol = Vector2()
 var timer = 0
+
 
 
 signal lammutus(blockbroken)
@@ -154,6 +157,7 @@ func save_world():
 	for s in range(20):
 		data.store_8(get_parent().get_node("hud").inventory[s])
 		data.store_16(get_parent().get_node("hud").amounts[s])
+	data.store_double(sed)
 	#data.store_double(get_parent().get_node("hullmyts").position[0])
 	#data.store_double(get_parent().get_node("hullmyts").position[1])
 	data.close()
@@ -200,6 +204,7 @@ func load_world():
 		for s in range(20):
 			get_parent().get_node("hud").inventory[s] = data.get_8()
 			get_parent().get_node("hud").amounts[s] = data.get_16()
+		sed = data.get_double()
 	else:
 		print("data file not found")
 	data.close()
@@ -209,38 +214,41 @@ func load_world():
 func _ready():
 	randomize()
 	
+	sed = randi()
+	load_world()############################################Rtrrrrre
+	seed(sed)
 	
-	gnarlnoise.seed = 434
+	gnarlnoise.seed = sed+434
 	gnarlnoise.octaves = 5
 	gnarlnoise.period = 500
 	gnarlnoise.persistence = 0.5
 	gnarlnoise.lacunarity = 2
 	
-	continentnoise.seed = 222
+	continentnoise.seed = sed+222
 	continentnoise.octaves = 5
 	continentnoise.period = 500
 	continentnoise.persistence = 0.5
 	continentnoise.lacunarity = 2
 	
-	mainnoise.seed = 32
+	mainnoise.seed = sed+32
 	mainnoise.octaves = 7
 	mainnoise.period = 40
 	mainnoise.persistence = 0.5
 	mainnoise.lacunarity = 2
 	
-	cavenoise.seed = 39
+	cavenoise.seed = sed+39
 	cavenoise.octaves = 7
 	cavenoise.period = 100
 	cavenoise.persistence = 0.5
 	cavenoise.lacunarity = 2
 	
-	cavethicnoise.seed = 123
+	cavethicnoise.seed = sed+123
 	cavethicnoise.octaves = 7
 	cavethicnoise.period = 200
 	cavethicnoise.persistence = 0.5
 	cavethicnoise.lacunarity = 2
 	
-	treenoise.seed = 321
+	treenoise.seed = sed+321
 	treenoise.octaves = 5
 	treenoise.period = 300
 	treenoise.persistence = 0.5
@@ -249,7 +257,6 @@ func _ready():
 	
 	
 	scroll(0,0)
-	load_world()##################################################Rtrrrrre
 	fix_invalid_tiles()
 	
 func scroll(sx,sy): # sx and sy in chunks
