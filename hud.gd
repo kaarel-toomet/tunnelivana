@@ -37,6 +37,7 @@ var kuldp = Image.new()
 var kollivp = Image.new()
 var blocks
 var hotbar
+var impdir
 
 var kuld = 0
 var kolliv = 0
@@ -47,27 +48,30 @@ signal lammutadasaab
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-	none.load("assets/none.png")
-	liiv.load("assets/asdfblock.png")
-	meri.load("assets/sky.png")
-	muru.load("assets/ground.png")#.expand_x2_hq2x()
-	kast.load("assets/kast.png")#.expand_x2_hq2x()
-	kivi.load("assets/asdfback.png")#.expand_x2_hq2x()
-	lumi.load("assets/☃.png")#.expand_x2_hq2x()
-	sygavm.load("assets/deepw.png")#.expand_x2_hq2x()
-	puu.load("assets/puu.png")#.expand_x2_hq2x()
-	kaktus.load("assets/kaktus.png")#.expand_x2_hq2x()
-	lmaa.load("assets/luminemaa.png")#.expand_x2_hq2x()
-	kuusk.load("assets/kuusk.png")#.expand_x2_hq2x()
-	tsammal.load("assets/turbasammal.png")
-	jungle.load("assets/jungle.png")#.expand_x2_hq2x()
-	tundra.load("assets/tundra.png")#.expand_x2_hq2x()
-	mjxx.load("assets/seaice.png")#.expand_x2_hq2x()
-	akaatsia.load("assets/acacia.png")#.expand_x2_hq2x()
-	puit.load("assets/wood.png")
-	kuldp.load("assets/goldblock.png")
-	kollivp.load("assets/kollivaremed.png")
+	#if none.load("res://.import/none.png") == OK:
+	#	impdir = "res://.import"
+	#else:
+	impdir = "res://assets"
+	none.load(impdir + "/none.png")
+	liiv.load(impdir + "/asdfblock.png")
+	meri.load(impdir + "/sky.png")
+	muru.load(impdir + "/ground.png")#.expand_x2_hq2x()
+	kast.load(impdir + "/kast.png")#.expand_x2_hq2x()
+	kivi.load(impdir + "/asdfback.png")#.expand_x2_hq2x()
+	lumi.load(impdir + "/☃.png")#.expand_x2_hq2x()
+	sygavm.load(impdir + "/deepw.png")#.expand_x2_hq2x()
+	puu.load(impdir + "/puu.png")#.expand_x2_hq2x()
+	kaktus.load(impdir + "/kaktus.png")#.expand_x2_hq2x()
+	lmaa.load(impdir + "/luminemaa.png")#.expand_x2_hq2x()
+	kuusk.load(impdir + "/kuusk.png")#.expand_x2_hq2x()
+	tsammal.load(impdir + "/turbasammal.png")
+	jungle.load(impdir + "/jungle.png")#.expand_x2_hq2x()
+	tundra.load(impdir + "/tundra.png")#.expand_x2_hq2x()
+	mjxx.load(impdir + "/seaice.png")#.expand_x2_hq2x()
+	akaatsia.load(impdir + "/acacia.png")#.expand_x2_hq2x()
+	puit.load(impdir + "/wood.png")
+	kuldp.load(impdir + "/goldblock.png")
+	kollivp.load(impdir + "/kollivaremed.png")
 	
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
@@ -75,7 +79,7 @@ func _ready():
 				kuldp, kollivp, none]
 	#print(tsammal)
 	hotbar = Image.new()
-	hotbar.load("assets/hotbar.png")
+	hotbar.load(impdir + "/hotbar.png")
 	
 
 func collect(item):

@@ -9,7 +9,7 @@
 [ext_resource path="res://hud.tscn" type="PackedScene" id=15]
 [ext_resource path="res://kuld.tscn" type="PackedScene" id=23]
 
-[sub_resource type="CircleShape2D" id=12]
+[sub_resource type="CircleShape2D" id=1]
 radius = 24.0
 
 [node name="main" type="Node2D"]
@@ -60,7 +60,7 @@ editor_draw_limits = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hullmyts/Area2D"]
 position = Vector2( 16, 16 )
-shape = SubResource( 12 )
+shape = SubResource( 1 )
 
 [node name="Area2D2" type="Area2D" parent="hullmyts"]
 

@@ -8,6 +8,8 @@ var speed = 6
 var pause = false
 export (PackedScene) var kuld
 
+var breaking = true
+
 var left = false
 var right = false
 var up = false
@@ -57,23 +59,23 @@ func _process(delta):
 		
 		tilemap.pcol = pos
 		#print(c.normal)
-		if c.normal.x == -1 and right:
+		if c.normal.x == -1 and right and breaking:
 			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
 			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
 			right = false
 			#speed = 0
-		elif c.normal.x == 1 and left:
+		elif c.normal.x == 1 and left and breaking:
 			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
 			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
 			left = false
 			#speed = 0
-		elif c.normal.y == -1 and down:
+		elif c.normal.y == -1 and down and breaking:
 			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
 			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
 			yvel = 0#
 			down = false
 			#speed = 0
-		elif c.normal.y == 1 and up:
+		elif c.normal.y == 1 and up and breaking:
 			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
 			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
 			yvel = 0#
@@ -118,6 +120,9 @@ func _process(delta):
 	if Input.is_action_just_pressed("R"):
 		position.x = 0
 		position.y = -256
+		
+	if Input.is_action_just_pressed("minetoggle"):
+		breaking = !breaking
 	
 	if health == 0:
 		position = Vector2(0,0)
