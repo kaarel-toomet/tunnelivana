@@ -44,6 +44,8 @@ var impdir
 var kuld = 0
 var kolliv = 0
 
+var time = 0
+
 
 signal ehitadasaab(block)
 signal lammutadasaab
@@ -104,6 +106,13 @@ func _input(event):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if get_parent().paused: return
+	time += delta
+	$light.color = Color(0.0625,0.0625,0.125,clamp(-sin(time*0.1)+0.5,0,0.85))
+	if -sin(time*0.1) > 0:
+		get_parent().sf = 20
+	else:
+		get_parent().sf = 0
 	
 	$goldtext.text = str(kuld)
 	$kollivtext.text = str(kolliv)
