@@ -9,6 +9,9 @@ signal unhit
 var hxy
 var mouseon
 
+var ltxt = preload("res://assets/kii.png")
+var rtxt = preload("res://assets/iik.png")
+
 var yvel = 0
 var onground
 var timer = 0
@@ -46,6 +49,10 @@ func _process(delta):
 			cvel = -1
 	if chase:
 		cvel = (hxy-position).x
+	if cvel < 0:
+		$Sprite.texture = ltxt
+	if cvel > 0:
+		$Sprite.texture = rtxt
 	var vel = Vector2(cvel,0)
 	#vel.y = yvel
 	vel.x = sign(vel.x)
