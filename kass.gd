@@ -13,6 +13,9 @@ var yvel = 0
 var onground
 var timer = 0
 
+var chase = false
+var ctimer = 0
+
 export var speed = 3
 
 var cvel = 1
@@ -30,6 +33,8 @@ func _process(delta):
 	if paused:
 		return
 	timer += delta
+	if chase:
+		ctimer -= delta
 	hxy = get_parent().get_parent().get_node("hullmyts").position
 	if rand_range(0,200) < 1:
 		var rand = rand_range(0,10)
@@ -39,6 +44,8 @@ func _process(delta):
 			cvel = 0
 		else:
 			cvel = -1
+	if chase:
+		cvel = (hxy-position).x
 	var vel = Vector2(cvel,0)
 	#vel.y = yvel
 	vel.x = sign(vel.x)
@@ -54,11 +61,17 @@ func _process(delta):
 			#print(c.normal)
 			yvel = -10
 			#onground = false
+		elif onground:
+			yvel = 0
 	if not onground:
-		yvel += 1
-	if Input.is_action_just_pressed("LCLICK") and mouseon:
-		#get_parent().get_parent().get_node("hud").kolliv += 1
-		cvel = (hxy-position).x
+		yvel += 60*delta
+		if ctimer <= 0:
+			chase = false
+	if Input.is_action_just_pressed("LCLICK") and mouseon and not chase:
+		if get_parent().get_parent().get_node("hud").inventory[get_parent().get_parent().get_node("hud").select] == 20:
+			get_parent().get_parent().get_node("hud").amounts[get_parent().get_parent().get_node("hud").select] -= 1
+			chase = true
+			ctimer = 60
 	if (position-hxy).x + (position-hxy).y > 1280:
 		queue_free()
 

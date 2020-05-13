@@ -36,6 +36,7 @@ var puit = Image.new()
 var kuldp = Image.new()
 var kollivp = Image.new()
 var kast2 = Image.new()
+var algae = Image.new()
 var blocks
 var hotbar
 var impdir
@@ -74,10 +75,11 @@ func _ready():
 	kuldp.load(impdir + "/goldblock.png")
 	kollivp.load(impdir + "/kollivaremed.png")
 	kast2.load(impdir + "/turbasammal.png")
+	algae.load(impdir + "/vetikas.png")
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 				lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
-				kuldp, kollivp, kast2, none]
+				kuldp, kollivp, kast2, algae, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")

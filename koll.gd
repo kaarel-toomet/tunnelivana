@@ -45,8 +45,10 @@ func _process(delta):
 			#print(c.normal)
 			yvel = -10
 			#onground = false
+		elif onground:
+			yvel = 0
 	if not onground:
-		yvel += 1
+		yvel += 60*delta
 	if Input.is_action_just_pressed("LCLICK") and killable:
 		get_parent().get_parent().get_node("hud").kolliv += 1
 		queue_free()
