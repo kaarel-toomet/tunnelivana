@@ -35,7 +35,7 @@ func _process(delta):
 	vel.x = sign(vel.x)
 	vel = vel*speed
 	vel.y = yvel
-	move_and_slide(vel/delta)
+	move_and_slide(vel*60)
 		
 	#move_and_slide(Vector2(0,yvel)/delta)
 	for i in get_slide_count():

@@ -35,7 +35,7 @@ func _process(delta):
 	vel.x = sign(vel.x)
 	vel = vel*speed
 	vel.y = yvel
-	move_and_slide(vel/delta)
+	move_and_slide(vel*60)
 	if timer >= 2:
 		timer = 0
 		var pew = tulepall.instance()

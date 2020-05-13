@@ -16,7 +16,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if get_parent().get_parent().paused: return
-	position += vel
+	position += vel*delta*60
 	life -= delta
 	if life <= 0:
 		queue_free()

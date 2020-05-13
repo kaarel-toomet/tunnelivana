@@ -101,19 +101,19 @@ func _process(delta):
 		down = Input.is_action_pressed("ui_down")
 		
 	if right:
-		move_and_slide(Vector2(speed,0)/delta)
+		move_and_slide(Vector2(speed,0)*60)
 	if left:
-		move_and_slide(Vector2(-speed,0)/delta)
+		move_and_slide(Vector2(-speed,0)*60)
 	if down:
-		move_and_slide(Vector2(0,speed)/delta)
+		move_and_slide(Vector2(0,speed)*60)
 	if up and onG:
 		yvel = -20#move_and_slide(Vector2(0,-speed)/delta)
 		onG = false
-	move_and_slide(Vector2(0,yvel)/delta)
+	move_and_slide(Vector2(0,yvel)*60)
 	#print(onG)
 	
 	if not onG:
-		yvel += 1
+		yvel += 60*delta
 	else:
 		yvel = 0
 				
