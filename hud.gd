@@ -35,6 +35,7 @@ var akaatsia = Image.new()
 var puit = Image.new()
 var kuldp = Image.new()
 var kollivp = Image.new()
+var kast2 = Image.new()
 var blocks
 var hotbar
 var impdir
@@ -72,11 +73,11 @@ func _ready():
 	puit.load(impdir + "/wood.png")
 	kuldp.load(impdir + "/goldblock.png")
 	kollivp.load(impdir + "/kollivaremed.png")
-	
+	kast2.load(impdir + "/turbasammal.png")
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 				lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
-				kuldp, kollivp, none]
+				kuldp, kollivp, kast2, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -145,6 +146,9 @@ func _process(delta):
 		if block == 13:# or block == 10 or block == 12 or block == 15:
 			amounts[select] -= 1
 			collect(12)
+		if block == 16:
+			amounts[select] -= 1
+			collect(19)
 		#if block == 16:
 			#amounts[select] -= 1
 			#collect(3)

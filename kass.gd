@@ -7,15 +7,16 @@ extends KinematicBody2D
 signal hit
 signal unhit
 var hxy
-var killable
+var mouseon
 
 var yvel = 0
 var onground
 var timer = 0
 
-export var speed = 2.5
+export var speed = 3
 
-var tulepall = preload("tulepall.tscn")
+var cvel = 1
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -30,7 +31,15 @@ func _process(delta):
 		return
 	timer += delta
 	hxy = get_parent().get_parent().get_node("hullmyts").position
-	var vel =  hxy-position
+	if rand_range(0,200) < 1:
+		var rand = rand_range(0,10)
+		if rand < 1:
+			cvel = 1
+		elif rand < 9:
+			cvel = 0
+		else:
+			cvel = -1
+	var vel = Vector2(cvel,0)
 	#vel.y = yvel
 	vel.x = sign(vel.x)
 	vel = vel*speed
@@ -47,17 +56,17 @@ func _process(delta):
 			#onground = false
 	if not onground:
 		yvel += 1
-	if Input.is_action_just_pressed("LCLICK") and killable:
-		get_parent().get_parent().get_node("hud").kolliv += 1
-		queue_free()
+	if Input.is_action_just_pressed("LCLICK") and mouseon:
+		#get_parent().get_parent().get_node("hud").kolliv += 1
+		cvel = (hxy-position).x
 	if (position-hxy).x + (position-hxy).y > 1280:
 		queue_free()
 
 func _on_Area2D_mouse_entered():
-	killable = true
+	mouseon = true
 
 func _on_Area2D_mouse_exited():
-	killable = false
+	mouseon = false
 
 
 func _on_groundboxx_body_entered(body):

@@ -57,6 +57,8 @@ func _process(delta):
 	if Input.is_action_just_pressed("LCLICK") and killable:
 		get_parent().get_parent().get_node("hud").collect(8)
 		queue_free()
+	if (position-hxy).x + (position-hxy).y > 1280:
+		queue_free()
 
 func _on_Area2D_mouse_entered():
 	killable = true

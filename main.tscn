@@ -77,6 +77,8 @@ layer = 2
 [node name="pirnivanad" type="Node2D" parent="."]
 
 [node name="tulepallid" type="Node2D" parent="."]
+
+[node name="kassid" type="Node2D" parent="."]
 [connection signal="pause" from="." to="TileMap" method="_on_main_pause"]
 [connection signal="pause" from="." to="hullmyts" method="_on_main_pause"]
 [connection signal="ehitus" from="TileMap" to="hud" method="_on_TileMap_ehitus"]
