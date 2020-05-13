@@ -45,12 +45,12 @@ block adding checklist
 
 var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
-	14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0}
-var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,19, 20]
+	14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0}
+var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,19,20,21,22,23]
 #255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
 #7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
 #13:bauxite, 14:waterfall, 15:waterfall buffer, 16:wood, 17:gold, 18:monster ruins,
-#19:box, 20:algae
+#19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
 
 func generate(cx,cy):
 	if $generated.get_cell(cx,cy) != -1:
@@ -125,7 +125,10 @@ func generate(cx,cy):
 						for j in range(y-4,y-1):
 							set_cell(i,j,0)
 					set_cell(x,y-2,0)
-					set_cell(x+3,y-2,12)
+					if y > -50:
+						set_cell(x+3,y-2,12)
+					else:
+						set_cell(x+3,y-2,21)
 				
 			#if randi() % 1000 == 0:
 				#var spawn = kuld.instance()
@@ -330,7 +333,7 @@ func _physics_process(delta):
 					set_cell(x,y,1)
 				if get_cell(x,y) == 15:
 					set_cell(x,y,14)
-				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.03:
+				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01:
 					var top = (y-randi()%6)-5
 					for j in range(top-5,y):
 						for i in range(x-5,x+5):
@@ -338,6 +341,13 @@ func _physics_process(delta):
 							if dist[0]+dist[1] < 3+rand_range(-0.5,1.5) and j < top+1:
 								set_cell(i,j,6)
 						if j >= top: set_cell(x,j,5)
+				if get_cell(x,y) == 22 and (get_cell(x,y+1) == 6 or get_cell(x,y+1) == 5) and rand_range(0,1) < 0.03:
+					set_cell(x,y,21)
+					set_cell(x,y-1,21)
+
+func tarbreak(x,y):
+	pcol = Vector2(x,y)
+	emit_signal("lammutus",get_cell(x,y))
 					
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:

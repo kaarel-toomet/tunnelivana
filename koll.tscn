@@ -25,6 +25,7 @@ position = Vector2( 8, 9 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="groundboxx"]
 polygon = PoolVector2Array( 0, -8, 0, -8, 6, 7, -6, 7 )
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]
 [connection signal="body_entered" from="groundboxx" to="." method="_on_groundboxx_body_entered"]

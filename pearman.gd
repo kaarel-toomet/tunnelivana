@@ -79,3 +79,10 @@ func _on_groundboxx_body_exited(body):
 	if body != self:
 		onground = false
 		#print('rf ',body)
+
+
+
+
+func _on_Area2D_area_entered(area):
+	if area.get_parent() == get_parent().get_parent().get_node("explosions"):
+		queue_free()

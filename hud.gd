@@ -37,9 +37,15 @@ var kuldp = Image.new()
 var kollivp = Image.new()
 var kast2 = Image.new()
 var algae = Image.new()
+var sibul = Image.new()
+var sibulseed = Image.new()
+var pearmansculpt = Image.new()
+
 var blocks
 var hotbar
 var impdir
+
+var onion = preload("res://onion.tscn")
 
 var kuld = 0
 var kolliv = 0
@@ -78,10 +84,14 @@ func _ready():
 	kollivp.load(impdir + "/kollivaremed.png")
 	kast2.load(impdir + "/turbasammal.png")
 	algae.load(impdir + "/vetikas.png")
+	sibul.load(impdir + "/sibul.png")
+	sibulseed.load(impdir + "/sibulaseeme.png")
+	pearmansculpt.load(impdir + "/pearman.png")
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 				lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
-				kuldp, kollivp, kast2, algae, none]
+				kuldp, kollivp, kast2, algae, sibul, sibulseed,
+				pearmansculpt, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -108,9 +118,9 @@ func _input(event):
 func _process(delta):
 	if get_parent().paused: return
 	time += delta
-	$light.color = Color(0.0625,0.0625,0.125,clamp(-sin(time*0.1)+0.5,0,0.85))
-	if -sin(time*0.1) > 0:
-		get_parent().sf = 20
+	$light.color = Color(0.0625,0.0625,0.125,clamp(-sin(time*0.02)+0.5,0,0.85))
+	if -sin(time*0.02) > 0:
+		get_parent().sf = 10
 	else:
 		get_parent().sf = 0
 	
@@ -160,10 +170,23 @@ func _process(delta):
 		if block == 16:
 			amounts[select] -= 1
 			collect(19)
-		#if block == 16:
-			#amounts[select] -= 1
-			#collect(3)
-			
+		if block == 21:
+			amounts[select] -= 1
+			collect(22)
+		if block == 4 and inventory.has(6) and amounts[inventory.find(6)] >= 3:
+			amounts[select] -= 5
+			amounts[inventory.find(6)] -= 3
+			collect(23)
+	if Input.is_action_just_pressed("yeet") and inventory[select] == 21:
+		amounts[select] -= 1
+		var mxy = get_parent().get_global_mouse_position()#/32
+		var pew = onion.instance()
+		get_parent().get_node("sibulad").add_child(pew)
+		pew.position = get_parent().get_node("hullmyts").position
+		pew.vel = (mxy-get_parent().get_node("hullmyts").position).normalized() * 12
+		pew.scale = Vector2(2,2)
+		
+		
 	if kuld >= 10 and (empty < 20 or inventory.has(17)):
 		kuld -= 10
 		collect(17)
