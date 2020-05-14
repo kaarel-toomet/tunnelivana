@@ -4,16 +4,18 @@ extends CanvasLayer
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export var inventory = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+export var inventory = [24,21,-1,-1,-1,-1,-1,-1,-1,-1,
 				-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
-export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
+export var amounts = [1000,1000,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 var select = 0
 var empty = 0
 
 #block ids:
-#0:sand, 1:sea, 2:grass, 3:box, 4:stone, 5:snow, 6:deep sea
-#7:tree, 8:cactus, 9:snowy ground, 10:spruce, 11:peat moss, 12:jungle
-#13:tundra, 14:sea ice, 15:acacia
+#255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
+#7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
+#13:bauxite, 14:waterfall, 15:waterfall buffer, 16:wood, 17:gold, 18:monster ruins,
+#19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
+#24:fire, 25:clay, 26:fired clay, 27:glass
 
 var none = Image.new()
 var liiv = Image.new()
@@ -40,6 +42,10 @@ var algae = Image.new()
 var sibul = Image.new()
 var sibulseed = Image.new()
 var pearmansculpt = Image.new()
+var tuli = Image.new()
+var savi = Image.new()
+var psavi = Image.new()
+var klaas = Image.new()
 
 var blocks
 var hotbar
@@ -87,11 +93,15 @@ func _ready():
 	sibul.load(impdir + "/sibul.png")
 	sibulseed.load(impdir + "/sibulaseeme.png")
 	pearmansculpt.load(impdir + "/pearman.png")
+	tuli.load(impdir + "/tuli.png")
+	savi.load(impdir + "/savi.png")
+	psavi.load(impdir + "/psavi.png")
+	klaas.load(impdir + "/glass.png")
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 				lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
 				kuldp, kollivp, kast2, algae, sibul, sibulseed,
-				pearmansculpt, none]
+				pearmansculpt, tuli, savi, psavi, klaas, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -120,7 +130,7 @@ func _process(delta):
 	time += delta
 	$light.color = Color(0.0625,0.0625,0.125,clamp(-sin(time*0.02)+0.5,0,0.85))
 	if -sin(time*0.02) > 0:
-		get_parent().sf = 10
+		get_parent().sf = 5
 	else:
 		get_parent().sf = 0
 	
@@ -164,9 +174,9 @@ func _process(delta):
 		if block == 6 and amounts[select] >= 7:
 			amounts[select] -= 7
 			collect(10)
-		if block == 13:# or block == 10 or block == 12 or block == 15:
-			amounts[select] -= 1
-			collect(12)
+		#if block == 13:# or block == 10 or block == 12 or block == 15:
+			#amounts[select] -= 1
+			#collect(12)
 		if block == 16:
 			amounts[select] -= 1
 			collect(19)
