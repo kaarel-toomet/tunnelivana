@@ -24,6 +24,9 @@ func _process(delta):
 
 func _on_tulepall_body_entered(body):
 	if body == get_parent().get_parent().get_node("TileMap"):
+		var tilemap = get_parent().get_parent().get_node("TileMap")
+		if tilemap.get_cellv(position/32) == 0:# in tilemap.flammable:
+			tilemap.set_cellv(position/32,24)
 		queue_free()
 
 

@@ -79,6 +79,7 @@ func _process(delta):
 			get_parent().get_parent().get_node("hud").amounts[get_parent().get_parent().get_node("hud").select] -= 1
 			chase = true
 			ctimer = 60
+			get_parent().get_parent().get_node("hullmyts").spawnpoint = position
 	if (position-hxy).x + (position-hxy).y > 1280:
 		queue_free()
 

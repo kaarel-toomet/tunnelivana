@@ -197,6 +197,8 @@ func save_world():
 		data.store_8(get_parent().get_node("hud").inventory[s])
 		data.store_16(get_parent().get_node("hud").amounts[s])
 	data.store_double(sed)
+	data.store_double(get_parent().get_node("hullmyts").spawnpoint.x)
+	data.store_double(get_parent().get_node("hullmyts").spawnpoint.y)
 	#data.store_double(get_parent().get_node("hullmyts").position[0])
 	#data.store_double(get_parent().get_node("hullmyts").position[1])
 	data.close()
@@ -244,6 +246,8 @@ func load_world():
 			get_parent().get_node("hud").inventory[s] = data.get_8()
 			get_parent().get_node("hud").amounts[s] = data.get_16()
 		sed = data.get_double()
+		get_parent().get_node("hullmyts").spawnpoint.x = data.get_double()
+		get_parent().get_node("hullmyts").spawnpoint.y = data.get_double()
 	else:
 		print("data file not found")
 	data.close()

@@ -4,9 +4,9 @@ extends CanvasLayer
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export var inventory = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+export var inventory = [21,16,13,-1,-1,-1,-1,-1,-1,-1,
 				-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
-export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
+export var amounts = [1000,1000,1000,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 var select = 0
 var empty = 0
 
@@ -167,6 +167,7 @@ func _process(delta):
 		var block = inventory[select]
 		if block == 5:# or block == 10 or block == 12 or block == 15:
 			amounts[select] -= 1
+			collect(16)
 			collect(16)
 		if block == 7 or block == 8:
 			amounts[select] -= 1

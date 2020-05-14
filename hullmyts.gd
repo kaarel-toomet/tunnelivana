@@ -8,6 +8,8 @@ var speed = 6
 var pause = false
 export (PackedScene) var kuld
 
+export var spawnpoint = Vector2(0,-256)
+
 var breaking = true
 
 var left = false
@@ -118,14 +120,13 @@ func _process(delta):
 		yvel = 0
 				
 	if Input.is_action_just_pressed("R"):
-		position.x = 0
-		position.y = -256
+		position = spawnpoint
 		
 	if Input.is_action_just_pressed("minetoggle"):
 		breaking = !breaking
 	
 	if health == 0:
-		position = Vector2(0,0)
+		position = spawnpoint
 		health = 20
 		
 	var cx = floor((position.x / 32) / chunkW)
