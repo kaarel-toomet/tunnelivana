@@ -13,6 +13,8 @@ var yvel = 0
 var onground
 var timer = 0
 
+var health = 5
+
 export var speed = 2.5
 
 var tulepall = preload("tulepall.tscn")
@@ -49,11 +51,24 @@ func _process(delta):
 			yvel = 0
 	if not onground:
 		yvel += 60*delta
-	if Input.is_action_just_pressed("LCLICK") and killable:
+	if health <= 0:
 		get_parent().get_parent().get_node("hud").kolliv += 1
 		queue_free()
 	if (position-hxy).x + (position-hxy).y > 1280:
 		queue_free()
+
+func _physics_process(delta):
+	if get_parent().get_parent().paused: return
+	var parent = get_parent().get_parent()
+	var mxy = parent.get_global_mouse_position()/32
+	var hxy = parent.get_node("hullmyts").position
+	var space_state = get_world_2d().direct_space_state
+	var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
+	if Input.is_action_just_pressed("LCLICK") and killable and !result:
+		health -= 1
+		yvel = -5
+		if get_parent().get_parent().get_node("hud").inventory[get_parent().get_parent().get_node("hud").select] == 29:
+			health -= 3
 
 func _on_Area2D_mouse_entered():
 	killable = true
@@ -78,4 +93,4 @@ func _on_groundboxx_body_exited(body):
 
 func _on_Area2D_area_entered(area):
 	if area.get_parent() == get_parent().get_parent().get_node("explosions"):
-		queue_free()
+		health -= 5

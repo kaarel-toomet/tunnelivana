@@ -37,24 +37,25 @@ var paused = false
 block adding checklist
 1.add image to assets folder
 2.add to tileset
-3.add to breakto and solid
-4.add to ID comment
+3.add to breakto, solid and flammable lists if needed
+4.add to ID comments
 5.add image and image load to HUD script
 6.add to blocks dict in HUD script
+7.add to list in hullmyts
 """
 
 var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
 	14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0,
-	22:0, 23:0, 24:0, 25:0, 26:0, 27:0}
+	22:0, 23:0, 24:0, 25:0, 26:0, 27:0, 28:0, 29:0}
 var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,
-				19,20,21,22,23,25,26,27]
+				19,20,21,22,23,25,26,27,28,29]
 var flammable = [5,6,8,16,19,21]
 #255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
 #7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
 #13:bauxite, 14:waterfall, 15:waterfall buffer, 16:wood, 17:gold, 18:monster ruins,
 #19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
-#24:fire, 25:clay, 26:fired clay, 27:glass
+#24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword
 
 func generate(cx,cy):
 	if $generated.get_cell(cx,cy) != -1:

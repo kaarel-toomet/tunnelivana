@@ -12,6 +12,26 @@ export var spawnpoint = Vector2(0,-256)
 
 var breaking = true
 
+var break0 = preload("res://assets/break0.png")
+var break1 = preload("res://assets/break1.png")
+var break2 = preload("res://assets/break2.png")
+var break3 = preload("res://assets/break3.png")
+var break4 = preload("res://assets/break4.png")
+var breaktxts = [break0,break1,break2,break3,break4,break0]
+
+var breakprg = 0
+var breakpos = Vector2(0,0)
+var breakspd = 5
+var breakspds = [1,1,5,5,10,7,5,5,5,0,1,0,20,15,1,
+				0,7,12,12,10,3,1,1,100,1,7,10,10,1,1]
+
+# block IDs
+#0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
+#7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
+#13:bauxite, 14:waterfall, 15:waterfall buffer, 16:wood, 17:gold, 18:monster ruins,
+#19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
+#24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword
+
 var left = false
 var right = false
 var up = false
@@ -32,6 +52,7 @@ var onG = false
 
 
 signal changechunk
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -60,30 +81,26 @@ func _process(delta):
 		var pos = Vector2(floor((position[0]+16)/32),floor((position[1]+16)/32))-c.normal
 		
 		tilemap.pcol = pos
-		#print(c.normal)
+		breakpos = pos
+		
 		if c.normal.x == -1 and right and breaking:
-			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
-			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
-			right = false
-			#speed = 0
+			breakprg += 60*delta
+			
 		elif c.normal.x == 1 and left and breaking:
-			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
-			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
-			left = false
-			#speed = 0
+			breakprg += 60*delta
+			
 		elif c.normal.y == -1 and down and breaking:
-			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
-			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
-			yvel = 0#
-			down = false
-			#speed = 0
+			breakprg += 60*delta
+			
 		elif c.normal.y == 1 and up and breaking:
-			#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
+			breakprg += 60*delta
+		breakpos = pos*32
+		breakspd = breakspds[tilemap.get_cellv(pos)]
+		if get_parent().get_node("hud").inventory[get_parent().get_node("hud").select] == 28:
+			breakspd = breakspd * 0.1
+		if floor(breakprg/breakspd) >= 5:
 			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
-			yvel = 0#
-			up = false
-		else:
-			speed = 6
+			breakprg = 0
 		#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
 			#get_parent().get_node("TileMap").pcol = pos
 			#get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cellv(pos))
@@ -128,6 +145,9 @@ func _process(delta):
 	if health == 0:
 		position = spawnpoint
 		health = 20
+	
+	get_parent().get_node("breaking").texture = breaktxts[floor(breakprg/breakspd)]
+	get_parent().get_node("breaking").position = breakpos + Vector2(16,16)
 		
 	var cx = floor((position.x / 32) / chunkW)
 	var cy = floor((position.y / 32) / chunkH)

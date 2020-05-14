@@ -4,8 +4,8 @@ extends CanvasLayer
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export var inventory = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-				-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
+export var inventory = [1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+						-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
 export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 var select = 0
 var empty = 0
@@ -15,7 +15,7 @@ var empty = 0
 #7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
 #13:bauxite, 14:waterfall, 15:waterfall buffer, 16:wood, 17:gold, 18:monster ruins,
 #19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
-#24:fire, 25:clay, 26:fired clay, 27:glass
+#24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword
 
 var none = Image.new()
 var liiv = Image.new()
@@ -46,6 +46,8 @@ var tuli = Image.new()
 var savi = Image.new()
 var psavi = Image.new()
 var klaas = Image.new()
+var kirka = Image.new()
+var mqqk = Image.new()
 
 var blocks
 var hotbar
@@ -97,11 +99,13 @@ func _ready():
 	savi.load(impdir + "/savi.png")
 	psavi.load(impdir + "/psavi.png")
 	klaas.load(impdir + "/glass.png")
+	kirka.load(impdir + "/pickaxe.png")
+	mqqk.load(impdir + "/sword.png")
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 				lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
 				kuldp, kollivp, kast2, algae, sibul, sibulseed,
-				pearmansculpt, tuli, savi, psavi, klaas, none]
+				pearmansculpt, tuli, savi, psavi, klaas, kirka, mqqk, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -184,6 +188,15 @@ func _process(delta):
 		if block == 21:
 			amounts[select] -= 1
 			collect(22)
+		if block == 12:
+			amounts[select] -= 1
+			collect(28)
+		if block == 28:
+			amounts[select] -= 1
+			collect(29)
+		if block == 29:
+			amounts[select] -= 1
+			collect(28)
 		if block == 4 and inventory.has(6) and amounts[inventory.find(6)] >= 3:
 			amounts[select] -= 5
 			amounts[inventory.find(6)] -= 3

@@ -18,7 +18,7 @@ position = Vector2( 64, 8 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
 position = Vector2( -56, 0 )
-polygon = PoolVector2Array( -8, -8, -8, 8, 8, 8, 8, -8 )
+polygon = PoolVector2Array( -12, -12, -12, 12, 12, 12, 12, -12 )
 
 [node name="groundboxx" type="Area2D" parent="."]
 position = Vector2( 8, 9 )
