@@ -4,9 +4,9 @@ extends CanvasLayer
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export var inventory = [24,21,-1,-1,-1,-1,-1,-1,-1,-1,
+export var inventory = [24,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 				-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
-export var amounts = [1000,1000,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
+export var amounts = [1000,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 var select = 0
 var empty = 0
 
