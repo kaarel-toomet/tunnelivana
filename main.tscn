@@ -87,8 +87,6 @@ layer = 2
 [node name="breaking" type="Sprite" parent="."]
 position = Vector2( 100, 100 )
 scale = Vector2( 2, 2 )
-[connection signal="pause" from="." to="hullmyts" method="_on_main_pause"]
-[connection signal="pause" from="." to="TileMap" method="_on_main_pause"]
 [connection signal="ehitus" from="TileMap" to="hud" method="_on_TileMap_ehitus"]
 [connection signal="jahsaabehitada" from="TileMap" to="hud" method="_on_TileMap_jahsaabehitada"]
 [connection signal="lammutus" from="TileMap" to="hud" method="_on_TileMap_lammutus"]

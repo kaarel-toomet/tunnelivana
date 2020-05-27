@@ -19,7 +19,7 @@ A Minecraft-inspired 2D game, with weird textures and lots of random stuff
 - There is no world choosing system yet, so if you have multiple worlds, you have to rename world folders
 - Close the game to save (requires a folder named `world`)
 - K to toggle if you can break or not
-- Tools are made from aluminum and each other
+- Tools are made from aluminum and each other.
 
 ## TODO
 - [ ] Save choosing system
@@ -33,3 +33,4 @@ A Minecraft-inspired 2D game, with weird textures and lots of random stuff
 - [x] Breaking delay
 - [x] Monsters harder to kill (health)
 - [ ] Sound
+

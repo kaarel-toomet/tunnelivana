@@ -318,7 +318,7 @@ func scroll(sx,sy): # sx and sy in chunks
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	if paused:
+	if get_parent().paused:
 		return
 	timer += delta
 	var parent = get_parent()
@@ -402,7 +402,3 @@ func _on_hud_ehitadasaab(block):
 
 func _on_hud_lammutadasaab():
 	lammuta(pcol[0],pcol[1])
-
-
-func _on_main_pause():
-	paused = !paused

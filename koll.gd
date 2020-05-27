@@ -22,8 +22,8 @@ var tulepall = preload("tulepall.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-
+	health += get_parent().get_parent().difficulty
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -68,7 +68,7 @@ func _physics_process(delta):
 		health -= 1
 		yvel = -5
 		if get_parent().get_parent().get_node("hud").inventory[get_parent().get_parent().get_node("hud").select] == 29:
-			health -= 3
+			health -= 3 - get_parent().get_parent().difficulty*0.5
 
 func _on_Area2D_mouse_entered():
 	killable = true

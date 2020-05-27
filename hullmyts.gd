@@ -64,8 +64,8 @@ func _ready():
 
 #Calledeveryframe.'delta'istheelapsedtimesincethepreviousframe.
 func _process(delta):
-	if pause:
-		return
+	if get_parent().paused: return
+	
 	var oldpos = position
 	if Input.is_action_just_pressed("LSHIFT"):
 		fast = true
@@ -98,6 +98,7 @@ func _process(delta):
 		breakspd = breakspds[tilemap.get_cellv(pos)]
 		if get_parent().get_node("hud").inventory[get_parent().get_node("hud").select] == 28:
 			breakspd = breakspd * 0.1
+		breakspd *= 1+get_parent().difficulty*0.4
 		if floor(breakprg/breakspd) >= 5:
 			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
 			breakprg = 0
@@ -165,17 +166,10 @@ func _process(delta):
 		if attacked:
 			immunity = 0.5
 			health -= 1
-	health = min(health,10)
+	health = min(health,10+get_parent().difficulty)
 	
 	
 	get_parent().get_node("hud/lifetext").text = str(health)
-
-
-func _on_main_pause():
-	if pause == true:
-		pause = false
-	else:
-		pause = true
 
 
 func _on_Area2D_area_entered(area):

@@ -4,9 +4,12 @@ extends CanvasLayer
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+var pausemenu = preload("res://pause_menu.tscn")
+
 export var inventory = [1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
 						-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
 export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
+
 var select = 0
 var empty = 0
 
@@ -48,6 +51,8 @@ var psavi = Image.new()
 var klaas = Image.new()
 var kirka = Image.new()
 var mqqk = Image.new()
+
+var opaused = false
 
 var blocks
 var hotbar
@@ -130,6 +135,10 @@ func _input(event):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if get_parent().paused and !opaused:
+		var menu = pausemenu.instance()
+		add_child(menu)
+	opaused = get_parent().paused
 	if get_parent().paused: return
 	time += delta
 	$light.color = Color(0.0625,0.0625,0.125,clamp(-sin(time*0.02)+0.5,0,0.85))

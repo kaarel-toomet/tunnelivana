@@ -7,6 +7,8 @@ signal pause
 export var paused = false
 var sf = 1
 
+var difficulty = -1
+
 export (PackedScene) var koll
 var pearman = preload("res://pearman.tscn")
 var cat = preload("res://kass.tscn")
@@ -21,7 +23,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("P"):
 		emit_signal("pause")
 		paused = !paused
-	if randi() % 800*60*delta <= sf and not paused:
+	if randi() % 800*60*delta*(1-difficulty*0.4) <= sf and not paused:
 		var spawn = koll.instance()
 		$kollid.add_child(spawn)
 		var sxmax = $hullmyts.position.x+(1.5*$TileMap.chunkW*32)
@@ -36,7 +38,7 @@ func _process(delta):
 			spawn.queue_free()
 		spawn.position = Vector2(sx,sy)
 		spawn.scale = Vector2(2,2)
-	if randi() % 800*60*delta <= sf and not paused:
+	if randi() % 800*60*delta*(1-difficulty*0.4) <= sf and not paused:
 		var spawn = pearman.instance()
 		$pirnivanad.add_child(spawn)
 		var sxmax = $hullmyts.position.x+(1.5*$TileMap.chunkW*32)
