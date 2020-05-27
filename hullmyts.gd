@@ -166,7 +166,7 @@ func _process(delta):
 		if attacked:
 			immunity = 0.5
 			health -= 1
-	health = min(health,10+get_parent().difficulty)
+	health = min(health,10-get_parent().difficulty)
 	
 	
 	get_parent().get_node("hud/lifetext").text = str(health)

@@ -8,7 +8,7 @@ signal hit
 signal unhit
 var hxy
 var killable
-var health = 4 + get_parent().get_parent().difficulty
+var health = 4
 
 var yvel = 0
 var onground
@@ -21,7 +21,7 @@ var tulepall = preload("tulepall.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	health += get_parent().get_parent().difficulty
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
