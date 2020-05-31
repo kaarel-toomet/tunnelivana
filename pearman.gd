@@ -29,6 +29,9 @@ func _process(delta):
 	var paused = get_parent().get_parent().paused
 	if paused:
 		return
+	if rand_range(0,1) < 0.01:
+		get_parent().get_parent().get_node("pirnimyra").position = position
+		get_parent().get_parent().get_node("pirnimyra").play(0)
 	timer += delta
 	hxy = get_parent().get_parent().get_node("hullmyts").position + Vector2(16,16)
 	var vel =  hxy-position
@@ -44,6 +47,8 @@ func _process(delta):
 		pew.position = position
 		pew.vel = (hxy-position).normalized() * 6
 		pew.scale = Vector2(2,2)
+		get_parent().get_parent().get_node("pirnipeavise").position = position
+		get_parent().get_parent().get_node("pirnipeavise").play(0)
 		
 	#move_and_slide(Vector2(0,yvel)/delta)
 	for i in get_slide_count():

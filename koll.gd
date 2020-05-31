@@ -30,6 +30,9 @@ func _process(delta):
 	var paused = get_parent().get_parent().paused
 	if paused:
 		return
+	if rand_range(0,1) < 0.01:
+		get_parent().get_parent().get_node("kollimyra").position = position
+		get_parent().get_parent().get_node("kollimyra").play(0)
 	timer += delta
 	hxy = get_parent().get_parent().get_node("hullmyts").position
 	var vel =  hxy-position
