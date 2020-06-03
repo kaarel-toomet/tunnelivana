@@ -79,7 +79,7 @@ layer = 2
 
 [node name="pirnivanad" type="Node2D" parent="."]
 
-[node name="tulepallid" type="Node2D" parent="."]
+[node name="mxdatomatid" type="Node2D" parent="."]
 
 [node name="kassid" type="Node2D" parent="."]
 

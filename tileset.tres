@@ -19,7 +19,7 @@
 [ext_resource path="res://assets/acacia.png" type="Texture" id=17]
 [ext_resource path="res://assets/kollivaremed.png" type="Texture" id=18]
 [ext_resource path="res://assets/wood.png" type="Texture" id=19]
-[ext_resource path="res://assets/algae.png" type="Texture" id=20]
+[ext_resource path="res://assets/vetikas.png" type="Texture" id=20]
 [ext_resource path="res://assets/sibul.png" type="Texture" id=21]
 [ext_resource path="res://assets/sibulaseeme.png" type="Texture" id=22]
 [ext_resource path="res://assets/pearman.png" type="Texture" id=23]
@@ -492,7 +492,7 @@ resource_name = "tiles"
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 19/z_index = 0
-20/name = "algae.png 20"
+20/name = "vetikas.png 20"
 20/texture = ExtResource( 20 )
 20/tex_offset = Vector2( 0, 0 )
 20/modulate = Color( 1, 1, 1, 1 )

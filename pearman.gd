@@ -16,7 +16,7 @@ var timer = 0
 
 export var speed = 2.5
 
-var tulepall = preload("tulepall.tscn")
+var mxdatomat = preload("mxdatomat.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -42,8 +42,8 @@ func _process(delta):
 	move_and_slide(vel*60)
 	if timer >= 2:
 		timer = 0
-		var pew = tulepall.instance()
-		get_parent().get_parent().get_node("tulepallid").add_child(pew)
+		var pew = mxdatomat.instance()
+		get_parent().get_parent().get_node("mxdatomatid").add_child(pew)
 		pew.position = position
 		pew.vel = (hxy-position).normalized() * 6
 		pew.scale = Vector2(2,2)

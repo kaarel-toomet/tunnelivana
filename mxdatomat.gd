@@ -21,12 +21,9 @@ func _process(delta):
 	if life <= 0:
 		queue_free()
 
-
-func _on_tulepall_body_entered(body):
+func _on_mxdatomat_body_entered(body):
 	if body == get_parent().get_parent().get_node("TileMap"):
-		var tilemap = get_parent().get_parent().get_node("TileMap")
-		if tilemap.get_cellv(position/32) == 0 and rand_range(0,1) < 0.1:# in tilemap.flammable:
-			tilemap.set_cellv(position/32,24)
+		#var tilemap = get_parent().get_parent().get_node("TileMap")
+		#if tilemap.get_cellv(position/32) == 0 and rand_range(0,1) < 0.1:# in tilemap.flammable:
+			#tilemap.set_cellv(position/32,24)
 		queue_free()
-
-

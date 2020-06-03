@@ -43,7 +43,7 @@ var chunkH = 10
 var immunity = 0
 var attacked = false
 
-export var health = 10
+export var health = 1099999999999
 
 var oldpos = position
 var fast = false
@@ -188,11 +188,11 @@ func _on_Area2D_area_exited(area):
 
 
 func _on_Area2D2_body_entered(body):
-	if body == get_parent().get_node("TileMap"):
+	if body != self:
 		onG = true
 	
 
 
 func _on_Area2D2_body_exited(body):
-	if body == get_parent().get_node("TileMap"):
+	if body != self:
 		onG = false

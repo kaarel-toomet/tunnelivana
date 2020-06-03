@@ -330,26 +330,43 @@ func _physics_process(delta):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
 	if Input.is_action_just_pressed("RCLICK") and (not result):
 		emit_signal("ehitus")
-	if timer >= 0.5:
+		
+	if timer >= 0.5: ## Update blocks
 		timer = 0
 		for x in range(wOffsetx*chunkW,wOffsetx*chunkW+chunkW*3):
 			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
-				if get_cell(x,y) == 1:
-					if get_cell(x,y+1) == 0:
-						set_cell(x,y,15)
+				if get_cell(x,y) == 1: # Water
+					if get_cell(x,y+1) == 0 and y+1 <= wOffsety*chunkH+chunkH*3:
+						set_cell(x,y,0)
+						set_cell(x,y+1,9)
 					else:
-						if get_cell(x-1,y) == 0:
+						var l = get_cell(x-1,y) == 0
+						var r = get_cell(x+1,y) == 0
+						if x+1 > wOffsetx*chunkW+chunkW*3: r = false
+						if x-1 < wOffsetx*chunkW: l = false
+						if l and r:
+							l = randi()%2 == 0
+							r = !l
+						if l:
 							set_cell(x-1,y,9)
-						if get_cell(x+1,y) == 0:
+							if get_cell(x,y-1) != 1 and get_cell(x,y-1) != 9:
+								set_cell(x,y,0)
+							else:
+								set_cell(x,y-1,0)
+						if r:
 							set_cell(x+1,y,9)
-				if get_cell(x,y) == 14:
-					if get_cell(x,y+1) == 0:
-						set_cell(x,y+1,15)
-					elif get_cell(x,y+1) in solid:
-						set_cell(x,y,9)
-					elif get_cell(x,y+1) == 1:
-						if get_cell(x-1,y+1) != 0 and get_cell(x-1,y+1) != 14 and get_cell(x-1,y+1) != 0 and get_cell(x-1,y+1) != 14:
-							set_cell(x,y,9)
+							if get_cell(x,y-1) != 1 and get_cell(x,y-1) != 9:
+								set_cell(x,y,0)
+							else:
+								set_cell(x,y-1,0)
+				#if get_cell(x,y) == 14: # Waterfall
+					#if get_cell(x,y+1) == 0:
+						#set_cell(x,y+1,15)
+					#elif get_cell(x,y+1) in solid:
+						#set_cell(x,y,9)
+					#elif get_cell(x,y+1) == 1:
+						#if get_cell(x-1,y+1) != 0 and get_cell(x-1,y+1) != 14 and get_cell(x-1,y+1) != 0 and get_cell(x-1,y+1) != 14:
+							#set_cell(x,y,9)
 		for x in range(wOffsetx*chunkW,wOffsetx*chunkW+chunkW*3):
 			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
 				if get_cell(x,y) == 9:

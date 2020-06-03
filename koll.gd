@@ -17,7 +17,7 @@ var health = 5
 
 export var speed = 2.5
 
-var tulepall = preload("tulepall.tscn")
+var mxdatomat = preload("mxdatomat.tscn")
 
 
 # Called when the node enters the scene tree for the first time.

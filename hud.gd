@@ -6,7 +6,7 @@ extends CanvasLayer
 # var b = "text"
 var pausemenu = preload("res://pause_menu.tscn")
 
-export var inventory = [1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+export var inventory = [1,2,-1,-1,-1,-1,-1,-1,-1,-1,
 						-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
 export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 
