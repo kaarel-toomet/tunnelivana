@@ -372,7 +372,9 @@ func _physics_process(delta):
 				if get_cell(x,y) == 9:
 					set_cell(x,y,1)
 				if get_cell(x,y) == 15:
-					set_cell(x,y,14)
+					set_cell(x,y,1)
+				if get_cell(x,y) == 14:
+					set_cell(x,y,1)
 				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01:
 					var top = (y-randi()%6)-5
 					for j in range(top-5,y):
