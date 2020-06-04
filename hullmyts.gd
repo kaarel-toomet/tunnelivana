@@ -4,7 +4,8 @@ extends KinematicBody2D
 # var a = 2
 # var b = "text"
 var screen_size  # Size of the game window.
-var speed = 6
+var basespeed = 5
+var speed = basespeed
 var pause = false
 export (PackedScene) var kuld
 
@@ -49,6 +50,9 @@ var oldpos = position
 var fast = false
 var yvel = 0
 var onG = false
+var swim = false
+
+var oxy = 10
 
 
 signal changechunk
@@ -65,6 +69,13 @@ func _ready():
 #Calledeveryframe.'delta'istheelapsedtimesincethepreviousframe.
 func _process(delta):
 	if get_parent().paused: return
+	
+	if get_parent().get_node("TileMap").get_cellv(position/32) == 1 or get_parent().get_node("TileMap").get_cellv(position/32) == 14:
+		swim = true
+		speed = basespeed/2
+	else:
+		swim = false
+		speed = basespeed
 	
 	var oldpos = position
 	if Input.is_action_just_pressed("LSHIFT"):
@@ -112,7 +123,7 @@ func _process(delta):
 	if not fast:
 		left = Input.is_action_just_pressed("ui_left")
 		right = Input.is_action_just_pressed("ui_right")
-		up = Input.is_action_just_pressed("ui_up")
+		up = Input.is_action_pressed("ui_up")
 		down = Input.is_action_just_pressed("ui_down")
 	else:
 		left = Input.is_action_pressed("ui_left")
@@ -129,10 +140,16 @@ func _process(delta):
 	if up and onG:
 		yvel = -20#move_and_slide(Vector2(0,-speed)/delta)
 		onG = false
+	if swim:
+		yvel = clamp(yvel,-3,3)
+		onG = true
+		oxy -= delta
+	else: oxy = 10
 	move_and_slide(Vector2(0,yvel)*60)
-	#print(onG)
 	
-	if not onG:
+	get_parent().get_node("hud").get_node("oxytext").text = str(int(max(oxy,0)))
+	
+	if !onG or swim:
 		yvel += 60*delta
 	else:
 		yvel = 0
@@ -143,7 +160,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("minetoggle"):
 		breaking = !breaking
 	
-	if health == 0:
+	if health <= 0:
 		position = spawnpoint
 		health = 20
 	
@@ -163,10 +180,10 @@ func _process(delta):
 		immunity -= delta
 	else:
 		immunity = 0
-		if attacked:
+		if attacked or oxy < 0 or get_parent().get_node("TileMap").get_cellv(position/32) == 24 or get_parent().get_node("TileMap").get_cellv(position/32) == 14:
 			immunity = 0.5
 			health -= 1
-	health = min(health,10-get_parent().difficulty)
+	health = min(health,20-get_parent().difficulty*2)
 	
 	
 	get_parent().get_node("hud/lifetext").text = str(health)
@@ -190,9 +207,11 @@ func _on_Area2D_area_exited(area):
 func _on_Area2D2_body_entered(body):
 	if body != self:
 		onG = true
+		health -= max(0,int(floor(yvel/32)))
 	
 
 
 func _on_Area2D2_body_exited(body):
 	if body != self:
 		onG = false
+		

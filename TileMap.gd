@@ -131,7 +131,7 @@ func generate(cx,cy):
 							set_cell(i,j,0)
 					set_cell(x,y-2,0)
 					if y > -50:
-						set_cell(x+3,y-2,12)
+						set_cell(x+3,y-2,7)
 					else:
 						set_cell(x+3,y-2,21)
 		for y in range(chunkH*cy,chunkH*(cy+1)):
@@ -148,6 +148,13 @@ func generate(cx,cy):
 						var dist = abs(x-i) + abs(y-j)
 						if dist < rand_range(1.5,3.5):
 							set_cell(i,j,25)
+		for y in range(chunkH*cy,chunkH*(cy+1)):
+			if get_cell(x,y) == 4 and rand_range(0,1) < 0.005:
+				for i in range(x-4,x+4):
+					for j in range(y-4,y+4):
+						var dist = abs(x-i) + abs(y-j)
+						if dist < rand_range(1.5,3.5) and get_cell(i,j) == 4:
+							set_cell(i,j,14)
 				
 			#if randi() % 1000 == 0:
 				#var spawn = kuld.instance()
@@ -359,6 +366,35 @@ func _physics_process(delta):
 								set_cell(x,y,0)
 							else:
 								set_cell(x,y-1,0)
+								
+				if get_cell(x,y) == 14: # Lava
+					if get_cell(x,y+1) == 0 and y+1 <= wOffsety*chunkH+chunkH*3:
+						set_cell(x,y,0)
+						set_cell(x,y+1,15)
+					else:
+						var l = get_cell(x-1,y) == 0
+						var r = get_cell(x+1,y) == 0
+						if x+1 > wOffsetx*chunkW+chunkW*3: r = false
+						if x-1 < wOffsetx*chunkW: l = false
+						if l and r:
+							l = randi()%2 == 0
+							r = !l
+						if l:
+							set_cell(x-1,y,15)
+							if get_cell(x,y-1) != 14 and get_cell(x,y-1) != 15:
+								set_cell(x,y,0)
+							else:
+								set_cell(x,y-1,0)
+						if r:
+							set_cell(x+1,y,15)
+							if get_cell(x,y-1) != 14 and get_cell(x,y-1) != 15:
+								set_cell(x,y,0)
+							else:
+								set_cell(x,y-1,0)
+					for i in range(x-2,x+2): # lava setting fire
+						for j in range(y-2,y+2):
+							if get_cell(i,j) == 0 and randi()%10 == 0:
+								set_cell(i,j,24)
 				#if get_cell(x,y) == 14: # Waterfall
 					#if get_cell(x,y+1) == 0:
 						#set_cell(x,y+1,15)
@@ -369,13 +405,11 @@ func _physics_process(delta):
 							#set_cell(x,y,9)
 		for x in range(wOffsetx*chunkW,wOffsetx*chunkW+chunkW*3):
 			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
-				if get_cell(x,y) == 9:
+				if get_cell(x,y) == 9: # Water buffer
 					set_cell(x,y,1)
-				if get_cell(x,y) == 15:
-					set_cell(x,y,1)
-				if get_cell(x,y) == 14:
-					set_cell(x,y,1)
-				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01:
+				if get_cell(x,y) == 15: # Lava buffer
+					set_cell(x,y,14)
+				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01: # Seed growing
 					var top = (y-randi()%6)-5
 					for j in range(top-5,y):
 						for i in range(x-5,x+5):
@@ -383,10 +417,10 @@ func _physics_process(delta):
 							if dist[0]+dist[1] < 3+rand_range(-0.5,1.5) and j < top+1:
 								set_cell(i,j,6)
 						if j >= top: set_cell(x,j,5)
-				if get_cell(x,y) == 22 and (get_cell(x,y+1) == 6 or get_cell(x,y+1) == 5) and rand_range(0,1) < 0.02:
+				if get_cell(x,y) == 22 and (get_cell(x,y+1) == 6 or get_cell(x,y+1) == 5) and rand_range(0,1) < 0.02: # Onion seed growing
 					set_cell(x,y,21)
 					set_cell(x,y-1,21)
-				if get_cell(x,y) == 24:
+				if get_cell(x,y) == 24: # Fire
 					if rand_range(0,1) < 0.05:
 						set_cell(x,y,0)
 					else:
@@ -400,6 +434,10 @@ func _physics_process(delta):
 									set_cell(i,j,27)
 								if get_cell(i,j) == 13 and rand_range(0,1) < 0.1:
 									set_cell(i,j,12)
+					for i in range(x-1,x+1):
+						for j in range(y-1,y+1):
+							if get_cell(i,j) == 1 or get_cell(i,j) == 9:
+								set_cell(x,y,0)
 
 func tarbreak(x,y):
 	pcol = Vector2(x,y)

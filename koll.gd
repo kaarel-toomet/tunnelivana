@@ -13,9 +13,13 @@ var yvel = 0
 var onground
 var timer = 0
 
+var ftimer = 0
+
 var health = 5
 
-export var speed = 2.5
+export var basespeed = 5
+var speed = basespeed
+var swim = false
 
 var mxdatomat = preload("mxdatomat.tscn")
 
@@ -30,13 +34,26 @@ func _process(delta):
 	var paused = get_parent().get_parent().paused
 	if paused:
 		return
+	
+	if get_parent().get_parent().get_node("TileMap").get_cellv(position/32) == 1 or get_parent().get_parent().get_node("TileMap").get_cellv(position/32) == 14:
+		swim = true
+		speed = basespeed/2
+	else:
+		swim = false
+		speed = basespeed
+	
 	if rand_range(0,1) < 0.01:
 		get_parent().get_parent().get_node("kollimyra").position = position
 		get_parent().get_parent().get_node("kollimyra").play(0)
 	timer += delta
 	hxy = get_parent().get_parent().get_node("hullmyts").position
 	var vel =  hxy-position
-	#vel.y = yvel
+	
+	if swim:
+		if get_parent().get_parent().get_node("TileMap").get_cellv(position/32 + Vector2(0,-1)) == 1 or get_parent().get_parent().get_node("TileMap").get_cellv(position/32 + Vector2(0,-1)) == 14 and hxy.y < position.y:
+			yvel = -3
+		#onground = true
+	
 	vel.x = sign(vel.x)
 	vel = vel*speed
 	vel.y = yvel
@@ -54,9 +71,17 @@ func _process(delta):
 			yvel = 0
 	if not onground:
 		yvel += 60*delta
+		
+	if get_parent().get_parent().get_node("TileMap").get_cellv(position/32)%10 == 4:
+		ftimer += delta
+		
+	if ftimer > 1:
+		health -= 1
+		
 	if health <= 0:
 		get_parent().get_parent().get_node("hud").kolliv += 1
 		queue_free()
+		
 	if (position-hxy).x + (position-hxy).y > 1280:
 		queue_free()
 

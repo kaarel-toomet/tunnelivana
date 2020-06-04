@@ -23,7 +23,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("P"):
 		emit_signal("pause")
 		paused = !paused
-	if randi() % 800*60*delta*(1-difficulty*0.4) <= sf and not paused:
+	if randi() % 1200*60*delta*(1-difficulty*0.4) <= sf and not paused:
 		var spawn = koll.instance()
 		$kollid.add_child(spawn)
 		var sxmax = $hullmyts.position.x+(1.5*$TileMap.chunkW*32)
@@ -38,7 +38,7 @@ func _process(delta):
 			spawn.queue_free()
 		spawn.position = Vector2(sx,sy)
 		spawn.scale = Vector2(2,2)
-	if randi() % 800*60*delta*(1-difficulty*0.4) <= sf and not paused:
+	if randi() % 1200*60*delta*(1-difficulty*0.4) <= sf and not paused:
 		var spawn = pearman.instance()
 		$pirnivanad.add_child(spawn)
 		var sxmax = $hullmyts.position.x+(1.5*$TileMap.chunkW*32)
@@ -53,7 +53,7 @@ func _process(delta):
 			spawn.queue_free()
 		spawn.position = Vector2(sx,sy)
 		spawn.scale = Vector2(2,2)
-	if randi() % 800*60*delta == 0 and not paused:
+	if randi() % 1200*60*delta == 0 and not paused:
 		var spawn = cat.instance()
 		$kassid.add_child(spawn)
 		var sxmax = $hullmyts.position.x+(1.5*$TileMap.chunkW*32)

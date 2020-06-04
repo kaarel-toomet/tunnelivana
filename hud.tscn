@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://hud.gd" type="Script" id=1]
 [ext_resource path="res://assets/hotbar.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://assets/hp.png" type="Texture" id=5]
 [ext_resource path="res://assets/kuld.png" type="Texture" id=6]
 [ext_resource path="res://assets/kv.png" type="Texture" id=7]
+[ext_resource path="res://assets/mull.png" type="Texture" id=8]
 
 [node name="hud" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -14,8 +15,8 @@ script = ExtResource( 1 )
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -2688.0
-margin_right = 2912.0
+margin_left = -2896.0
+margin_right = 2704.0
 margin_bottom = 64.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
@@ -97,6 +98,21 @@ margin_right = 2736.0
 margin_bottom = 1736.0
 mouse_filter = 2
 color = Color( 0, 0, 0, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite4" type="Sprite" parent="."]
+position = Vector2( 816, 16 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 8 )
+
+[node name="oxytext" type="Label" parent="."]
+margin_left = 824.0
+margin_top = 8.0
+margin_right = 864.0
+margin_bottom = 24.0
+text = "10"
 __meta__ = {
 "_edit_use_anchors_": false
 }
