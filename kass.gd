@@ -80,7 +80,7 @@ func _process(delta):
 			chase = true
 			ctimer = 60
 			get_parent().get_parent().get_node("hullmyts").spawnpoint = position
-	if (position-hxy).x + (position-hxy).y > 1280:
+	if abs((position-hxy).x + (position-hxy).y) > 1280:
 		queue_free()
 
 func _on_Area2D_mouse_entered():

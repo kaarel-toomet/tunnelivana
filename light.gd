@@ -48,7 +48,7 @@ func update_tile(x,y):
 		s-=1
 		set_cell(x,y,s)
 	
-	if is_skylit(x,y):
+	if is_skylit(x,y) and s < sl:
 		s = sl
 		set_cell(x,y,sl)
 	if is_blocklit(x,y):

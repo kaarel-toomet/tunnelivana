@@ -24,7 +24,8 @@ var breakprg = 0
 var breakpos = Vector2(0,0)
 var breakspd = 5
 var breakspds = [1,1,5,5,10,7,5,5,5,0,1,0,20,15,1,
-				0,7,12,12,10,3,1,1,100,1,7,10,10,1,1,100]
+				0,7,12,12,10,3,1,1,100,1,7,10,10,
+				1,1,100,200]
 
 # block IDs
 #0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
@@ -180,7 +181,8 @@ func _process(delta):
 		immunity -= delta
 	else:
 		immunity = 0
-		if attacked or oxy < 0 or get_parent().get_node("TileMap").get_cellv(position/32) == 24 or get_parent().get_node("TileMap").get_cellv(position/32) == 14:
+		var tpos = position/32
+		if attacked or oxy < 0 or get_parent().get_node("TileMap").get_cellv(tpos) == 24 or get_parent().get_node("TileMap").get_cellv(tpos) == 14:
 			immunity = 0.5
 			health -= 1
 	health = min(health,20-get_parent().difficulty*2)
@@ -196,7 +198,7 @@ func _on_Area2D_area_entered(area):
 	if area.get_parent().get_parent() == get_parent().get_node("kullad"):
 		area.get_parent().queue_free()
 		get_parent().get_node("hud").kuld += 1
-	if area.get_parent() == get_parent().get_node("tulepallid"):
+	if area.get_parent() == get_parent().get_node("mxdatomatid"):
 		attacked = true
 
 
@@ -207,7 +209,7 @@ func _on_Area2D_area_exited(area):
 func _on_Area2D2_body_entered(body):
 	if body != self:
 		onG = true
-		health -= max(0,int(floor(yvel/32)))
+		#health -= max(0,int(floor(yvel/32)))
 	
 
 

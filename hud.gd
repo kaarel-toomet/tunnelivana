@@ -6,7 +6,7 @@ extends CanvasLayer
 # var b = "text"
 var pausemenu = preload("res://pause_menu.tscn")
 
-export var inventory = [1,2,-1,-1,-1,-1,-1,-1,-1,-1,
+export var inventory = [31,2,-1,-1,-1,-1,-1,-1,-1,-1,
 						-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
 export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 
@@ -52,6 +52,7 @@ var klaas = Image.new()
 var kirka = Image.new()
 var mqqk = Image.new()
 var lamp = Image.new()
+var moon = Image.new()
 
 var opaused = false
 
@@ -65,6 +66,7 @@ var kuld = 0
 var kolliv = 0
 
 var time = 0
+var itime = 0
 
 
 signal ehitadasaab(block)
@@ -108,12 +110,15 @@ func _ready():
 	kirka.load(impdir + "/pickaxe.png")
 	mqqk.load(impdir + "/sword.png")
 	lamp.load(impdir + "/lamp.png")
+	moon.load(impdir + "/kuu.png")
+	
+	
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
-				lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
-				kuldp, kollivp, kast2, algae, sibul, sibulseed,
-				pearmansculpt, tuli, savi, psavi, klaas,
-				kirka, mqqk, lamp, none]
+			lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
+			kuldp, kollivp, kast2, algae, sibul, sibulseed,
+			pearmansculpt, tuli, savi, psavi, klaas,
+			kirka, mqqk, lamp, moon, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -144,7 +149,10 @@ func _process(delta):
 	opaused = get_parent().paused
 	if get_parent().paused: return
 	time += delta
-	get_parent().get_node("TileMap/light").sl = int(sin(time/100)*10+3.5)
+	if time >= 1:
+		itime += 1
+		time = 0
+	get_parent().get_node("TileMap/light").sl = int(sin(itime/100)*10+3.5)
 	#if -sin(time*0.02) > 0:
 		#get_parent().sf = 5
 	#else:

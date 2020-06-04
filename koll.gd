@@ -15,7 +15,7 @@ var timer = 0
 
 var ftimer = 0
 
-var health = 5
+var health = 4
 
 export var basespeed = 5
 var speed = basespeed
@@ -72,11 +72,11 @@ func _process(delta):
 	if not onground:
 		yvel += 60*delta
 		
-	if get_parent().get_parent().get_node("TileMap").get_cellv(position/32)%10 == 4:
+	if get_parent().get_parent().get_node("TileMap").get_cellv(position/32) == 14 or get_parent().get_parent().get_node("TileMap").get_cellv(position/32) == 24:
 		ftimer += delta
-		
-	if ftimer > 1:
+	if ftimer > 0.5:
 		health -= 1
+		ftimer = 0
 		
 	if health <= 0:
 		get_parent().get_parent().get_node("hud").kolliv += 1

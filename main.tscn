@@ -14,7 +14,7 @@
 [ext_resource path="res://hud.tscn" type="PackedScene" id=15]
 [ext_resource path="res://kuld.tscn" type="PackedScene" id=23]
 
-[sub_resource type="TileSet" id=2]
+[sub_resource type="TileSet" id=1]
 0/name = "brightnesses.png 0"
 0/texture = ExtResource( 9 )
 0/tex_offset = Vector2( 0, 0 )
@@ -128,7 +128,7 @@
 7/shapes = [  ]
 7/z_index = 0
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=2]
 radius = 24.0
 
 [node name="main" type="Node2D"]
@@ -150,7 +150,7 @@ format = 1
 
 [node name="light" type="TileMap" parent="TileMap"]
 z_index = 6
-tile_set = SubResource( 2 )
+tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
 script = ExtResource( 10 )
@@ -186,7 +186,7 @@ editor_draw_limits = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hullmyts/Area2D"]
 position = Vector2( 16, 16 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Area2D2" type="Area2D" parent="hullmyts"]
 
@@ -216,6 +216,7 @@ scale = Vector2( 2, 2 )
 
 [node name="kollimyra" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 6 )
+volume_db = 5.0
 
 [node name="pirnimyra" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 7 )

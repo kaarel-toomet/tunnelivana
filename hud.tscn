@@ -23,12 +23,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="hotbar" type="Sprite" parent="."]
+position = Vector2( 360, 18 )
+scale = Vector2( 2, 2 )
+z_index = 1
+z_as_relative = false
+texture = ExtResource( 2 )
+
 [node name="lifetext" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = 246.0
+anchor_left = 0.76
+anchor_right = 0.76
+margin_left = -20.2401
 margin_top = 8.0
-margin_right = 286.0
+margin_right = 19.7599
 margin_bottom = 22.0
 text = "20"
 align = 1
@@ -36,13 +43,6 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="hotbar" type="Sprite" parent="."]
-position = Vector2( 360, 18 )
-scale = Vector2( 2, 2 )
-z_index = 1
-z_as_relative = false
-texture = ExtResource( 2 )
 
 [node name="selslot" type="Sprite" parent="."]
 position = Vector2( 18, 18 )

@@ -81,10 +81,11 @@ func _process(delta):
 			yvel = 0
 	if not onground:
 		yvel += 60*delta
-	if get_parent().get_parent().get_node("TileMap").get_cellv(position/32)%10 == 4:
+	if get_parent().get_parent().get_node("TileMap").get_cellv(position/32) == 14 or get_parent().get_parent().get_node("TileMap").get_cellv(position/32) == 24:
 		ftimer += delta
-	if ftimer > 1:
+	if ftimer > 0.5:
 		health -= 1
+		ftimer = 0
 	if health <= 0:
 		get_parent().get_parent().get_node("hud").collect(8)
 		queue_free()
