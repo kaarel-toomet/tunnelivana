@@ -92,16 +92,6 @@ position = Vector2( 760, 48 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 7 )
 
-[node name="light" type="ColorRect" parent="."]
-margin_top = 64.0
-margin_right = 2736.0
-margin_bottom = 1736.0
-mouse_filter = 2
-color = Color( 0, 0, 0, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Sprite4" type="Sprite" parent="."]
 position = Vector2( 816, 16 )
 scale = Vector2( 2, 2 )

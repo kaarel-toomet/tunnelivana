@@ -38,24 +38,25 @@ block adding checklist
 1.add image to assets folder
 2.add to tileset
 3.add to breakto, solid and flammable lists if needed
-4.add to ID comments
-5.add image and image load to HUD script
-6.add to blocks dict in HUD script
-7.add to list in hullmyts
+4.add to lighting lists
+5.add to ID comments
+6.add image and image load to HUD script
+7.add to blocks dict in HUD script
+8.add to list in hullmyts
 """
 
 var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
 	14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0,
-	22:0, 23:0, 24:0, 25:0, 26:0, 27:0, 28:0, 29:0}
+	22:0, 23:0, 24:0, 25:0, 26:0, 27:0, 28:0, 29:0, 30:0}
 var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,
-				19,20,21,22,23,25,26,27,28,29]
+				19,20,21,22,23,25,26,27,28,29, 30]
 var flammable = [5,6,8,16,19,21]
 #255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
 #7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
 #13:bauxite, 14:waterfall, 15:waterfall buffer, 16:wood, 17:gold, 18:monster ruins,
 #19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
-#24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword
+#24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
 
 func generate(cx,cy):
 	if $generated.get_cell(cx,cy) != -1:
@@ -337,11 +338,12 @@ func _physics_process(delta):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
 	if Input.is_action_just_pressed("RCLICK") and (not result):
 		emit_signal("ehitus")
-		
+	
 	if timer >= 0.5: ## Update blocks
 		timer = 0
 		for x in range(wOffsetx*chunkW,wOffsetx*chunkW+chunkW*3):
 			for y in range(wOffsety*chunkH,wOffsety*chunkH+chunkH*3):
+				#$light.update_tile(x,y)
 				if get_cell(x,y) == 1: # Water
 					if get_cell(x,y+1) == 0 and y+1 <= wOffsety*chunkH+chunkH*3:
 						set_cell(x,y,0)
@@ -368,6 +370,10 @@ func _physics_process(delta):
 								set_cell(x,y-1,0)
 								
 				if get_cell(x,y) == 14: # Lava
+					for i in range(x-1, x+2):
+						for j in range(y-1, y+2):
+							if get_cell(i,j) == 23 and randi()%200 == 0:
+								set_cell(i,j,30)
 					if get_cell(x,y+1) == 0 and y+1 <= wOffsety*chunkH+chunkH*3:
 						set_cell(x,y,0)
 						set_cell(x,y+1,15)
@@ -409,7 +415,7 @@ func _physics_process(delta):
 					set_cell(x,y,1)
 				if get_cell(x,y) == 15: # Lava buffer
 					set_cell(x,y,14)
-				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01: # Seed growing
+				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01 and $light.get_cell(x,y) > 5: # Seed growing
 					var top = (y-randi()%6)-5
 					for j in range(top-5,y):
 						for i in range(x-5,x+5):
@@ -417,10 +423,14 @@ func _physics_process(delta):
 							if dist[0]+dist[1] < 3+rand_range(-0.5,1.5) and j < top+1:
 								set_cell(i,j,6)
 						if j >= top: set_cell(x,j,5)
-				if get_cell(x,y) == 22 and (get_cell(x,y+1) == 6 or get_cell(x,y+1) == 5) and rand_range(0,1) < 0.02: # Onion seed growing
+				if get_cell(x,y) == 22 and (get_cell(x,y+1) == 6 or get_cell(x,y+1) == 5) and rand_range(0,1) < 0.02 and $light.get_cell(x,y) > 5: # Onion seed growing
 					set_cell(x,y,21)
 					set_cell(x,y-1,21)
 				if get_cell(x,y) == 24: # Fire
+					for i in range(x-1,x+2):
+						for j in range(y-1,y+2):
+							if get_cell(i,j) == 1 or get_cell(i,j) == 9:
+								set_cell(x,y,0)
 					if rand_range(0,1) < 0.05:
 						set_cell(x,y,0)
 					else:
@@ -434,10 +444,7 @@ func _physics_process(delta):
 									set_cell(i,j,27)
 								if get_cell(i,j) == 13 and rand_range(0,1) < 0.1:
 									set_cell(i,j,12)
-					for i in range(x-1,x+1):
-						for j in range(y-1,y+1):
-							if get_cell(i,j) == 1 or get_cell(i,j) == 9:
-								set_cell(x,y,0)
+				$light.update_tile(x,y)
 
 func tarbreak(x,y):
 	pcol = Vector2(x,y)

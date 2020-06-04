@@ -100,7 +100,7 @@ func _physics_process(delta):
 	var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
 	if Input.is_action_just_pressed("LCLICK") and killable and !result:
 		health -= 1
-		yvel = -5
+		yvel = -7
 		if get_parent().get_parent().get_node("hud").inventory[get_parent().get_parent().get_node("hud").select] == 29:
 			health -= 3-get_parent().get_parent().difficulty*0.5
 

@@ -5,7 +5,7 @@ extends Node2D
 # var a = 2
 signal pause
 export var paused = false
-var sf = 1
+var sf = 5
 
 var difficulty = -1
 
@@ -36,6 +36,8 @@ func _process(delta):
 		sy = (randi() % int((symax-symin)) + symin)
 		if $TileMap.get_cell(sx/32,sy/32) in $TileMap.solid:
 			spawn.queue_free()
+		if $TileMap/light.get_cell(sx/32,sy/32) > 3:
+			spawn.queue_free()
 		spawn.position = Vector2(sx,sy)
 		spawn.scale = Vector2(2,2)
 	if randi() % 1200*60*delta*(1-difficulty*0.4) <= sf and not paused:
@@ -50,6 +52,8 @@ func _process(delta):
 		sx = (randi() % int((sxmax-sxmin)) + sxmin)
 		sy = (randi() % int((symax-symin)) + symin)
 		if $TileMap.get_cell(sx/32,sy/32) in $TileMap.solid:
+			spawn.queue_free()
+		if $TileMap/light.get_cell(sx/32,sy/32) > 3:
 			spawn.queue_free()
 		spawn.position = Vector2(sx,sy)
 		spawn.scale = Vector2(2,2)

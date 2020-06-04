@@ -51,6 +51,7 @@ var psavi = Image.new()
 var klaas = Image.new()
 var kirka = Image.new()
 var mqqk = Image.new()
+var lamp = Image.new()
 
 var opaused = false
 
@@ -106,11 +107,13 @@ func _ready():
 	klaas.load(impdir + "/glass.png")
 	kirka.load(impdir + "/pickaxe.png")
 	mqqk.load(impdir + "/sword.png")
+	lamp.load(impdir + "/lamp.png")
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 				lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
 				kuldp, kollivp, kast2, algae, sibul, sibulseed,
-				pearmansculpt, tuli, savi, psavi, klaas, kirka, mqqk, none]
+				pearmansculpt, tuli, savi, psavi, klaas,
+				kirka, mqqk, lamp, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -141,11 +144,11 @@ func _process(delta):
 	opaused = get_parent().paused
 	if get_parent().paused: return
 	time += delta
-	$light.color = Color(0.0625,0.0625,0.125,clamp(-sin(time*0.02)+0.5,0,0.85))
-	if -sin(time*0.02) > 0:
-		get_parent().sf = 5
-	else:
-		get_parent().sf = 0
+	get_parent().get_node("TileMap/light").sl = int(sin(time/100)*10+3.5)
+	#if -sin(time*0.02) > 0:
+		#get_parent().sf = 5
+	#else:
+		#get_parent().sf = 0
 	
 	$goldtext.text = str(kuld)
 	$kollivtext.text = str(kolliv)
@@ -206,7 +209,7 @@ func _process(delta):
 		if block == 29:
 			amounts[select] -= 1
 			collect(28)
-		if block == 4 and inventory.has(6) and amounts[inventory.find(6)] >= 3:
+		if block == 4 and inventory.has(6) and amounts[inventory.find(6)] >= 3 and amounts[select] >= 5:
 			amounts[select] -= 5
 			amounts[inventory.find(6)] -= 3
 			collect(23)
