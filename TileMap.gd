@@ -8,7 +8,7 @@ var continentnoise = OpenSimplexNoise.new()
 var cavenoise = OpenSimplexNoise.new()
 var cavethicnoise = OpenSimplexNoise.new()
 var treenoise = OpenSimplexNoise.new()
-#var tempnoise = OpenSimplexNoise.new()
+var lavanoise = OpenSimplexNoise.new()
 #var wetnoise = OpenSimplexNoise.new()
 #var largetempnoise = OpenSimplexNoise.new()
 #var largewetnoise = OpenSimplexNoise.new()
@@ -54,7 +54,7 @@ var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,
 var flammable = [5,6,8,16,19,21]
 #255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
 #7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
-#13:bauxite, 14:waterfall, 15:waterfall buffer, 16:wood, 17:gold, 18:monster ruins,
+#13:bauxite, 14:lava, 15:lava buffer, 16:wood, 17:gold, 18:monster ruins,
 #19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
 #24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp, 31: moon
 
@@ -80,20 +80,21 @@ func generate(cx,cy):
 			anoiseval += continentnoise.get_noise_1d(x)*30
 			anoiseval += anoisevaladd
 			
-			if noiseval > 0: # stone/grass/sand
-				gencell = 4
-				if y < -50 and rand_range(0,1) < 0.02: gencell = 13
+			if noiseval > 0: # stone/grass/sand/...
+				gencell = 4 # stone
+				if y < -50 and rand_range(0,1) < 0.02: gencell = 13 # bauxite
+				if lavanoise.get_noise_2d(x,y) > 0.35 - 0.0005*(cy*chunkH): gencell = 14 # large lava
 				if anoiseval < 0:
-					gencell = 2
+					gencell = 2 # grass
 					#if true:#rand_range(0,1) < 0.1:
 						#gencell = 5
 						#for j in range(y-randi()%10-2,y-1):
 							#set_cell(x,y,5)
 					if y >= -1:
-						gencell = 3
+						gencell = 3 # sand
 				if abs(cavenoise.get_noise_2d(x,y)) < cavethicnoise.get_noise_2d(x,y)*0.15+0.01:
 					gencell = 0
-			elif noiseval < 0: # air
+			elif noiseval < 0: # air/water
 				gencell = 0
 				if y >= 0:
 					gencell = 1
@@ -149,15 +150,16 @@ func generate(cx,cy):
 						var dist = abs(x-i) + abs(y-j)
 						if dist < rand_range(1.5,3.5):
 							set_cell(i,j,25)
-		for y in range(chunkH*cy,chunkH*(cy+1)):
-			if get_cell(x,y) == 4 and rand_range(0,1) < 0.005:
-				for i in range(x-4,x+4):
-					for j in range(y-4,y+4):
-						var dist = abs(x-i) + abs(y-j)
-						if dist < rand_range(1.5,3.5) and get_cell(i,j) == 4:
-							set_cell(i,j,14)
-		for y in range(chunkH*cy,chunkH*(cy+1)):
-			if get_cell(x,y) == 4 and rand_range(0,1) < 0.00005 and y>100:
+		if chunkH*cy < -50:
+			for y in range(chunkH*cy,chunkH*(cy+1)):
+				if get_cell(x,y) == 4 and rand_range(0,1) < 0.005:
+					for i in range(x-4,x+4):
+						for j in range(y-4,y+4):
+							var dist = abs(x-i) + abs(y-j)
+							if dist < rand_range(1.5,3.5) and get_cell(i,j) == 4:
+								set_cell(i,j,14)
+		for y in range(chunkH*cy,chunkH*(cy+1)): #moon
+			if rand_range(0,1) < 0.00005 and y>100:
 				for i in range(x,x+14):
 					for j in range(y,y+15):
 						set_cell(i,j,0)
@@ -315,7 +317,11 @@ func _ready():
 	treenoise.persistence = 0.5
 	treenoise.lacunarity = 2
 	
-	
+	treenoise.seed = sed+131
+	treenoise.octaves = 5
+	treenoise.period = 300
+	treenoise.persistence = 0.5
+	treenoise.lacunarity = 2
 	
 	scroll(0,0)
 	fix_invalid_tiles()

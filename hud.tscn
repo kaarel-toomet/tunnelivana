@@ -31,11 +31,9 @@ z_as_relative = false
 texture = ExtResource( 2 )
 
 [node name="lifetext" type="Label" parent="."]
-anchor_left = 0.76
-anchor_right = 0.76
-margin_left = -20.2401
+margin_left = 758.0
 margin_top = 8.0
-margin_right = 19.7599
+margin_right = 798.0
 margin_bottom = 22.0
 text = "20"
 align = 1

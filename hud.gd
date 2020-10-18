@@ -6,7 +6,7 @@ extends CanvasLayer
 # var b = "text"
 var pausemenu = preload("res://pause_menu.tscn")
 
-export var inventory = [31,2,-1,-1,-1,-1,-1,-1,-1,-1,
+export var inventory = [28,29,8,4,21,-1,-1,-1,-1,-1,
 						-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
 export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 
@@ -152,7 +152,7 @@ func _process(delta):
 	if time >= 1:
 		itime += 1
 		time = 0
-	get_parent().get_node("TileMap/light").sl = int(sin(itime/100)*10+3.5)
+	get_parent().get_node("TileMap/light").sl = int(sin(float(itime)/100)*10+3.5)
 	#if -sin(time*0.02) > 0:
 		#get_parent().sf = 5
 	#else:
