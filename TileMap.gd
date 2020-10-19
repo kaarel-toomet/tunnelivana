@@ -56,7 +56,7 @@ var flammable = [5,6,8,16,19,21]
 #7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
 #13:bauxite, 14:lava, 15:lava buffer, 16:wood, 17:gold, 18:monster ruins,
 #19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
-#24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp, 31: moon
+#24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
 
 func generate(cx,cy):
 	if $generated.get_cell(cx,cy) != -1:
@@ -83,7 +83,7 @@ func generate(cx,cy):
 			if noiseval > 0: # stone/grass/sand/...
 				gencell = 4 # stone
 				if y < -50 and rand_range(0,1) < 0.02: gencell = 13 # bauxite
-				if lavanoise.get_noise_2d(x,y) > 0.35 - 0.0005*(cy*chunkH): gencell = 14 # large lava
+				if lavanoise.get_noise_2d(x,y) > 0.4 - 0.0005*(cy*chunkH): gencell = 14 # large lava
 				if anoiseval < 0:
 					gencell = 2 # grass
 					#if true:#rand_range(0,1) < 0.1:
@@ -389,6 +389,8 @@ func _physics_process(delta):
 						for j in range(y-1, y+2):
 							if get_cell(i,j) == 23 and randi()%200 == 0:
 								set_cell(i,j,30)
+							if get_cell(i,j) == 1:
+								set_cell(x,y,4)
 					if get_cell(x,y+1) == 0 and y+1 <= wOffsety*chunkH+chunkH*3:
 						set_cell(x,y,0)
 						set_cell(x,y+1,15)
