@@ -35,7 +35,7 @@ func _process(delta):
 	if paused:
 		return
 	
-	if get_parent().get_parent().get_node("TileMap").get_cellv(position/32) == 1 or get_parent().get_parent().get_node("TileMap").get_cellv(position/32) == 14:
+	if [1,14,32].has(get_parent().get_parent().get_node("TileMap").get_cellv(position/32)):
 		swim = true
 		speed = basespeed/2
 	else:

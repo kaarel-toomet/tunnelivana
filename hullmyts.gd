@@ -25,7 +25,7 @@ var breakpos = Vector2(0,0)
 var breakspd = 5
 var breakspds = [1,1,5,5,10,7,5,5,5,0,1,0,20,15,1,
 				0,7,12,12,10,3,1,1,100,1,7,10,10,
-				1,1,100,200]
+				1,1,100,200,1]
 
 # block IDs
 #0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
@@ -71,7 +71,7 @@ func _ready():
 func _process(delta):
 	if get_parent().paused: return
 	
-	if get_parent().get_node("TileMap").get_cellv(position/32) == 1 or get_parent().get_node("TileMap").get_cellv(position/32) == 14:
+	if [1,14,32].has(get_parent().get_node("TileMap").get_cellv(position/32)):
 		swim = true
 		speed = basespeed/2
 	else:

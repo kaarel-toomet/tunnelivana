@@ -9,6 +9,7 @@ var cavenoise = OpenSimplexNoise.new()
 var cavethicnoise = OpenSimplexNoise.new()
 var treenoise = OpenSimplexNoise.new()
 var lavanoise = OpenSimplexNoise.new()
+var oilnoise = OpenSimplexNoise.new()
 #var wetnoise = OpenSimplexNoise.new()
 #var largetempnoise = OpenSimplexNoise.new()
 #var largewetnoise = OpenSimplexNoise.new()
@@ -48,15 +49,17 @@ block adding checklist
 var breakto = {-1:-1, 0:-1, 1:0, 2:0, 3:0, 4:0, 5:0,
 	6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0,
 	14:0, 15:0, 16:0, 17:0, 18:0, 19:0, 20:0, 21:0,
-	22:0, 23:0, 24:0, 25:0, 26:0, 27:0, 28:0, 29:0, 30:0, 31:0}
+	22:0, 23:0, 24:0, 25:0, 26:0, 27:0, 28:0, 29:0,
+	30:0, 31:0, 32:0, 33:0}
 var solid = [2,3,4,5,6,7,8,10,12,13,16,17,18,
 				19,20,21,22,23,25,26,27,28,29,30,31]
-var flammable = [5,6,8,16,19,21]
-#255:nothimg, 0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
+var flammable = [5,6,8,16,19,21,32,33]
+#0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
 #7:coal bush, 8:pear, 9:water buffer, 10:tree seed, 11:unused, 12:aluminium
 #13:bauxite, 14:lava, 15:lava buffer, 16:wood, 17:gold, 18:monster ruins,
 #19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
 #24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
+#31:????, 32:oil, 33:oil buffer
 
 func generate(cx,cy):
 	if $generated.get_cell(cx,cy) != -1:
@@ -64,6 +67,7 @@ func generate(cx,cy):
 	$generated.set_cell(cx,cy,0)
 	for x in range(chunkW*cx,chunkW*(cx+1)):
 		for y in range(chunkH*cy,chunkH*(cy+1)):
+			#if get_cell(x,y) != -1: continue
 			var gencell = 0
 			
 			var noiseval = mainnoise.get_noise_2d(x,y)
@@ -136,14 +140,14 @@ func generate(cx,cy):
 						set_cell(x+3,y-2,7)
 					else:
 						set_cell(x+3,y-2,21)
-		for y in range(chunkH*cy,chunkH*(cy+1)):
+		for y in range(chunkH*cy,chunkH*(cy+1)): # sand
 			if get_cell(x,y) == 4 and rand_range(0,1) < 0.005:
 				for i in range(x-4,x+4):
 					for j in range(y-4,y+4):
 						var dist = abs(x-i) + abs(y-j)
 						if dist < rand_range(1.5,3.5):
 							set_cell(i,j,3)
-		for y in range(chunkH*cy,chunkH*(cy+1)):
+		for y in range(chunkH*cy,chunkH*(cy+1)): # clay
 			if get_cell(x,y) == 4 and rand_range(0,1) < 0.005:
 				for i in range(x-4,x+4):
 					for j in range(y-4,y+4):
@@ -151,14 +155,21 @@ func generate(cx,cy):
 						if dist < rand_range(1.5,3.5):
 							set_cell(i,j,25)
 		if chunkH*cy < -50:
-			for y in range(chunkH*cy,chunkH*(cy+1)):
+			for y in range(chunkH*cy,chunkH*(cy+1)): # lava
 				if get_cell(x,y) == 4 and rand_range(0,1) < 0.005:
 					for i in range(x-4,x+4):
 						for j in range(y-4,y+4):
 							var dist = abs(x-i) + abs(y-j)
 							if dist < rand_range(1.5,3.5) and get_cell(i,j) == 4:
 								set_cell(i,j,14)
-		for y in range(chunkH*cy,chunkH*(cy+1)): #moon
+		for y in range(chunkH*cy,chunkH*(cy+1)): # oil
+			if get_cell(x,y) == 4 and rand_range(0,1) < 0.01*(oilnoise.get_noise_2d(x,y)):
+				for i in range(x-10,x+10):
+					for j in range(y-10,y+10):
+						var dist = abs(x-i) + abs(y-j)
+						if dist < rand_range(7,13):
+							set_cell(i,j,32)
+		for y in range(chunkH*cy,chunkH*(cy+1)): # ????
 			if rand_range(0,1) < 0.00005 and y>100:
 				for i in range(x,x+14):
 					for j in range(y,y+15):
@@ -317,11 +328,11 @@ func _ready():
 	treenoise.persistence = 0.5
 	treenoise.lacunarity = 2
 	
-	treenoise.seed = sed+131
-	treenoise.octaves = 5
-	treenoise.period = 300
-	treenoise.persistence = 0.5
-	treenoise.lacunarity = 2
+	oilnoise.seed = sed+131
+	oilnoise.octaves = 5
+	oilnoise.period = 300
+	oilnoise.persistence = 0.5
+	oilnoise.lacunarity = 2
 	
 	scroll(0,0)
 	fix_invalid_tiles()
@@ -384,6 +395,31 @@ func _physics_process(delta):
 							else:
 								set_cell(x,y-1,0)
 								
+				if get_cell(x,y) == 32: # Oil
+					if get_cell(x,y+1) == 0 and y+1 <= wOffsety*chunkH+chunkH*3:
+						set_cell(x,y,0)
+						set_cell(x,y+1,33)
+					else:
+						var l = get_cell(x-1,y) == 0
+						var r = get_cell(x+1,y) == 0
+						if x+1 > wOffsetx*chunkW+chunkW*3: r = false
+						if x-1 < wOffsetx*chunkW: l = false
+						if l and r:
+							l = randi()%2 == 0
+							r = !l
+						if l:
+							set_cell(x-1,y,33)
+							if get_cell(x,y-1) != 1 and get_cell(x,y-1) != 33:
+								set_cell(x,y,0)
+							else:
+								set_cell(x,y-1,0)
+						if r:
+							set_cell(x+1,y,33)
+							if get_cell(x,y-1) != 1 and get_cell(x,y-1) != 33:
+								set_cell(x,y,0)
+							else:
+								set_cell(x,y-1,0)
+								
 				if get_cell(x,y) == 14: # Lava
 					for i in range(x-1, x+2):
 						for j in range(y-1, y+2):
@@ -432,6 +468,8 @@ func _physics_process(delta):
 					set_cell(x,y,1)
 				if get_cell(x,y) == 15: # Lava buffer
 					set_cell(x,y,14)
+				if get_cell(x,y) == 33: # Oil buffer
+					set_cell(x,y,32)
 				if get_cell(x,y) == 2 and get_cell(x,y-1) == 10 and rand_range(0,1) < 0.01 and $light.get_cell(x,y) > 5: # Seed growing
 					var top = (y-randi()%6)-5
 					for j in range(top-5,y):

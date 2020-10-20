@@ -6,10 +6,10 @@ extends CanvasLayer
 # var b = "text"
 var pausemenu = preload("res://pause_menu.tscn")
 
-export var inventory = [28,29,8,4,21,-1,-1,-1,-1,-1,
+export var inventory = [28,29,8,4,21,31,-1,-1,-1,-1,
 						-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
-export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
-
+#export var amounts = [9999,9999,9999,9999,9999,9999,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
+export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 231230171102947284374737284837617384883882217287123417230175617610843650318751634064085751743508314765031846510843613046565130651038756314618705687513658714365083146503184653175637658763158713650187436508173564084317650831476508143650817436510837465018347651083476501384765018734058176340851763087561304865103874653465108756104363057863105871508165081650815731084756087576107531508650841356731843653108430456136531650485]
 var select = 0
 var empty = 0
 
@@ -52,7 +52,8 @@ var klaas = Image.new()
 var kirka = Image.new()
 var mqqk = Image.new()
 var lamp = Image.new()
-var moon = Image.new()
+var kuu = Image.new()
+var nafta = Image.new()
 
 var opaused = false
 
@@ -110,15 +111,15 @@ func _ready():
 	kirka.load(impdir + "/pickaxe.png")
 	mqqk.load(impdir + "/sword.png")
 	lamp.load(impdir + "/lamp.png")
-	moon.load(impdir + "/kuu.png")
-	
+	kuu.load(impdir + "/none.png")
+	nafta.load(impdir + "/nafta.png")
 	
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 			lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
 			kuldp, kollivp, kast2, algae, sibul, sibulseed,
 			pearmansculpt, tuli, savi, psavi, klaas,
-			kirka, mqqk, lamp, moon, none]
+			kirka, mqqk, lamp, kuu, nafta, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -139,6 +140,7 @@ func _input(event):
 				select -= 1
 			if event.button_index == BUTTON_WHEEL_DOWN:
 				select += 1
+				#collect(21)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
