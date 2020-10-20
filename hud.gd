@@ -8,8 +8,8 @@ var pausemenu = preload("res://pause_menu.tscn")
 
 export var inventory = [28,29,8,4,21,31,-1,-1,-1,-1,
 						-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
-#export var amounts = [9999,9999,9999,9999,9999,9999,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
-export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 231230171102947284374737284837617384883882217287123417230175617610843650318751634064085751743508314765031846510843613046565130651038756314618705687513658714365083146503184653175637658763158713650187436508173564084317650831476508143650817436510837465018347651083476501384765018734058176340851763087561304865103874653465108756104363057863105871508165081650815731084756087576107531508650841356731843653108430456136531650485]
+export var amounts = [9999,9999,9999,9999,9999,9999,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
+#export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 var select = 0
 var empty = 0
 
@@ -54,6 +54,7 @@ var mqqk = Image.new()
 var lamp = Image.new()
 var kuu = Image.new()
 var nafta = Image.new()
+var xmber = Image.new()
 
 var opaused = false
 
@@ -113,13 +114,13 @@ func _ready():
 	lamp.load(impdir + "/lamp.png")
 	kuu.load(impdir + "/none.png")
 	nafta.load(impdir + "/nafta.png")
-	
+	xmber.load(impdir + "/xmber.png")
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 			lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
 			kuldp, kollivp, kast2, algae, sibul, sibulseed,
 			pearmansculpt, tuli, savi, psavi, klaas,
-			kirka, mqqk, lamp, kuu, nafta, none]
+			kirka, mqqk, lamp, kuu, nafta, nafta, xmber, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -218,6 +219,9 @@ func _process(delta):
 			collect(29)
 		if block == 29:
 			amounts[select] -= 1
+			collect(34)
+		if block == 34:
+			amounts[select] -= 1
 			collect(28)
 		if block == 4 and inventory.has(6) and amounts[inventory.find(6)] >= 3 and amounts[select] >= 5:
 			amounts[select] -= 5
@@ -248,17 +252,11 @@ func _on_TileMap_ehitus():
 
 
 func _on_TileMap_lammutus(blockbroken):
-	if !get_parent().get_node("TileMap").solid.has(blockbroken): return
 	if empty < 20 or inventory.has(blockbroken):
-		#if blockbroken == 6:
 			#return
 		emit_signal("lammutadasaab")
 		
-		if inventory.has(blockbroken):
-			amounts[inventory.find(blockbroken)] += 1
-		else:
-			inventory[empty] = blockbroken
-			amounts[empty] += 1
+		collect(blockbroken)
 		
 
 

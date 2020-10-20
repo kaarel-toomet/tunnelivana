@@ -25,7 +25,7 @@ var breakpos = Vector2(0,0)
 var breakspd = 5
 var breakspds = [1,1,5,5,10,7,5,5,5,0,1,0,20,15,1,
 				0,7,12,12,10,3,1,1,100,1,7,10,10,
-				1,1,100,200,1]
+				1,1,100,200,1,1,1]
 
 # block IDs
 #0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
@@ -84,7 +84,6 @@ func _process(delta):
 	if Input.is_action_just_released("LSHIFT"):
 		fast = false
 	fast = true
-	
 	for i in get_slide_count():
 		var c = get_slide_collision(i)
 		var tilemap = get_parent().get_node("TileMap")
@@ -93,7 +92,7 @@ func _process(delta):
 		var pos = Vector2(floor((position[0]+16)/32),floor((position[1]+16)/32))-c.normal
 		
 		tilemap.pcol = pos
-		breakpos = pos
+		#breakpos = pos
 		
 		if c.normal.x == -1 and right and breaking:
 			breakprg += 60*delta
@@ -111,9 +110,14 @@ func _process(delta):
 		if get_parent().get_node("hud").inventory[get_parent().get_node("hud").select] == 28:
 			breakspd = breakspd * 0.1
 		breakspd *= 1+get_parent().difficulty*0.4
+		print(i)
 		if floor(breakprg/breakspd) >= 5:
-			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
 			breakprg = 0
+			#print("acese")
+			if !get_parent().get_node("TileMap").solid.has(tilemap.get_cellv(pos)): break
+			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
+			
+			
 		#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:
 			#get_parent().get_node("TileMap").pcol = pos
 			#get_parent().get_node("TileMap").emit_signal("lammutus",get_parent().get_node("TileMap").get_cellv(pos))

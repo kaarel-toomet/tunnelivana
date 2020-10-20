@@ -17,20 +17,22 @@ A Minecraft-inspired 2D game, with weird textures and lots of random stuff
 - Fire can melt stuff
 - Floating islands exist
 - There is no world choosing system yet, so if you have multiple worlds, you have to rename world folders
-- Close the game to save (requires a folder named `world`)
+- Close the game to save (IMPORTANT: requires a folder named `world` in the same directory as the game)
 - K to toggle if you can break or not
 - Tools are made from aluminum and each other.
+- Blocks larger than a single block are broken from the top left corner
 
 ## TODO
 - [ ] Save choosing system
-- [ ] Water system support limited amounts of fluids (and water and waterfalls on floating islands)
+- [x] Water system support limited amounts of fluids (and water and waterfalls on floating islands)
 - [ ] Optimizations
 - [ ] Refactoring
-- [ ] Better light system
+- [x] Better light system
 - [x] Balancing
  - [ ] A reason you need to make pear vaults (pear thieves?)
-- [ ] Saving monsters and time
+- [ ] Saving monsters
 - [x] Breaking delay
 - [x] Monsters harder to kill (health)
-- [ ] Sound
+- [ ] More and better sound
+- [ ] Better inventory management (chests?, temp slot for hotbar reordering? limited stack size?)
 
