@@ -366,7 +366,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("RCLICK") and (not result):
 		emit_signal("ehitus")
 	if Input.is_action_just_pressed("LCLICK") and hud.inventory[hud.select] == 34:
-		if get_cellv(mxy) in [1,14,32]:
+		if get_cell(floor(mxy.x),floor(mxy.y)) in [1,14,32]:
 			pcol = mxy
 			emit_signal("lammutus",get_cellv(mxy))
 	
