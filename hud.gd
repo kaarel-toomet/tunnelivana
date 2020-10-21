@@ -72,9 +72,6 @@ var time = 0
 var itime = 0
 
 
-signal ehitadasaab(block)
-signal lammutadasaab
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#if none.load("res://.import/none.png") == OK:
@@ -135,6 +132,10 @@ func collect(item):
 	else:
 		inventory[empty] = item
 		amounts[empty] = 1
+
+func can_collect(item):
+	if inventory.has(item) or empty < 20: return true
+	else: return false
 
 
 func _input(event):
@@ -250,21 +251,3 @@ func _process(delta):
 		kolliv -= 10
 		collect(18)
 			
-
-
-func _on_TileMap_ehitus():
-	if amounts[select] > 0:
-		emit_signal("ehitadasaab", inventory[select])
-
-
-func _on_TileMap_lammutus(blockbroken):
-	if empty < 20 or inventory.has(blockbroken):
-			#return
-		emit_signal("lammutadasaab")
-		
-		collect(blockbroken)
-		
-
-
-func _on_TileMap_jahsaabehitada():
-	amounts[select] -= 1

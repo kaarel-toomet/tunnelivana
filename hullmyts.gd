@@ -71,7 +71,7 @@ func _ready():
 func _process(delta):
 	if get_parent().paused: return
 	
-	if [1,14,32].has(get_parent().get_node("TileMap").get_cellv(position/32)):
+	if [1,14,32].has(get_parent().get_node("TileMap").get_cell(floor(position.x/32),floor(position.y/32))):
 		swim = true
 		speed = basespeed/2
 	else:
@@ -91,8 +91,10 @@ func _process(delta):
 			#return
 		var pos = Vector2(floor((position[0]+16)/32),floor((position[1]+16)/32))-c.normal
 		
-		tilemap.pcol = pos
-		#breakpos = pos
+		if !tilemap.solid.has(tilemap.get_cellv(pos)):
+			breakprg = 0
+			break
+			
 		
 		if c.normal.x == -1 and right and breaking:
 			breakprg += 60*delta
@@ -112,9 +114,8 @@ func _process(delta):
 		breakspd *= 1+get_parent().difficulty*0.4
 		if floor(breakprg/breakspd) >= 5:
 			breakprg = 0
-			#print("acese")
-			if !get_parent().get_node("TileMap").solid.has(tilemap.get_cellv(pos)): break
-			tilemap.emit_signal("lammutus",tilemap.get_cellv(pos))
+			####print("acese")    #acese
+			tilemap.lammutus(pos)
 			
 			
 		#if get_parent().get_node("TileMap").get_cellv(pos) in get_parent().get_node("TileMap").solid:

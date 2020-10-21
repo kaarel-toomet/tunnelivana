@@ -23,14 +23,10 @@ var sed = 0
 var wOffsetx = -1 # activewindow offset, top-left chunk in tiles
 var wOffsety = -1
 
-var pcol = Vector2()
 var timer = 0
 
 
 
-signal lammutus(blockbroken)
-signal ehitus
-signal jahsaabehitada
 var mxy
 var paused = false
 
@@ -184,17 +180,30 @@ func generate(cx,cy):
 				#spawn.position = Vector2(x*32,y*32)
 				#spawn.scale = Vector2(2,2)
 				
-func lammuta(x,y):
-	x = floor(x)
-	y = floor(y)
+func lammutus(pos):
+	var hud = get_parent().get_node("hud")
+	pos.x = floor(pos.x)
+	pos.y = floor(pos.y)
+	if !hud.inventory.has(get_cellv(pos)) and !hud.empty < 20: return
+	hud.collect(get_cellv(pos))
 	#if not get_cell(x,y) in solid:
 	#	return
-	set_cell(x,y,breakto[get_cell(x,y)])
+	set_cellv(pos,breakto[get_cellv(pos)])
 	if randi() % 100 == 0:
 		var spawn = kuld.instance()
 		get_parent().get_node("kullad").add_child(spawn)
-		spawn.position = Vector2(x*32+16,y*32+16)
+		spawn.position = Vector2(pos.x*32+16,pos.y*32+16)
 		spawn.scale = Vector2(2,2)
+
+func ehitus(pos):
+	var hud = get_parent().get_node("hud")
+	#print("acese 2 2")
+	if hud.amounts[hud.select] == 0: return
+	pos.x = floor(pos.x)
+	pos.y = floor(pos.y)
+	#print("acese 2")
+	set_cellv(pos,hud.inventory[hud.select])
+	hud.amounts[hud.select] -= 1
 
 #func save_chunk(cx,cy): ##cx and cy are in chunks
 	#var chunks := File.new()
@@ -365,11 +374,10 @@ func _physics_process(delta):
 	#if Input.is_action_just_pressed("LCLICK") and (not result):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
 	if Input.is_action_just_pressed("RCLICK") and (not result):
-		emit_signal("ehitus")
+		ehitus(mxy)
 	if Input.is_action_just_pressed("LCLICK"):
 		if get_cell(floor(mxy.x),floor(mxy.y)) in [1,14,32] and hud.inventory[hud.select] == 34:
-			pcol = mxy
-			emit_signal("lammutus",get_cellv(mxy))
+			lammutus(mxy)
 		elif get_cell(floor(mxy.x),floor(mxy.y)) == 35:
 			set_cell(floor(mxy.x),floor(mxy.y),36)
 		elif get_cell(floor(mxy.x),floor(mxy.y)) == 36:
@@ -511,10 +519,10 @@ func _physics_process(delta):
 									set_cell(i,j,12)
 				$light.update_tile(x,y)
 
-func tarbreak(x,y):
-	if !solid.has(get_cell(x,y)): return
-	pcol = Vector2(x,y)
-	emit_signal("lammutus",get_cell(x,y))
+#func tarbreak(x,y):
+#	if !solid.has(get_cell(x,y)): return
+#	pcol = Vector2(x,y)
+#	emit_signal("lammutus",get_cell(x,y))
 					
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:
@@ -524,11 +532,3 @@ func _notification(what):
 func _on_hullmyts_changechunk(changex, changey):
 	scroll(changex, changey)
 
-
-func _on_hud_ehitadasaab(block):
-	if !solid.has(get_cell(floor(mxy[0]),floor(mxy[1]))):
-		set_cell(floor(mxy[0]),floor(mxy[1]),block)
-		emit_signal("jahsaabehitada")
-
-func _on_hud_lammutadasaab():
-	lammuta(pcol[0],pcol[1])
