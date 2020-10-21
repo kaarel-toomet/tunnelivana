@@ -31,9 +31,9 @@ func _on_tulepall_body_entered(body):
 		for x in range(pos.x-5,pos.x+5):
 			for y in range(pos.y-5,pos.y+5):
 				var dist = abs(x-pos.x) + abs(y-pos.y)
-				if dist < rand_range(2.5,5):
-					tilemap.tarbreak(x,y)
-					if rand_range(0,1) < 0.1:
+				if dist < rand_range(2.5,5) and tilemap.get_cell(x,y) in tilemap.solid:
+					tilemap.lammutus(Vector2(x,y))
+					if rand_range(0,1) < 0.2:
 						tilemap.set_cell(x,y,24)
 		var bam = boom.instance()
 		get_parent().get_parent().get_node("explosions").add_child(bam)

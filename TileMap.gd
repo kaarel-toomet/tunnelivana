@@ -10,6 +10,7 @@ var cavethicnoise = OpenSimplexNoise.new()
 var treenoise = OpenSimplexNoise.new()
 var lavanoise = OpenSimplexNoise.new()
 var oilnoise = OpenSimplexNoise.new()
+
 #var wetnoise = OpenSimplexNoise.new()
 #var largetempnoise = OpenSimplexNoise.new()
 #var largewetnoise = OpenSimplexNoise.new()
@@ -24,6 +25,7 @@ var wOffsetx = -1 # activewindow offset, top-left chunk in tiles
 var wOffsety = -1
 
 var timer = 0
+var xo = 123
 
 
 
@@ -67,24 +69,25 @@ func generate(cx,cy):
 			#if get_cell(x,y) != -1: continue
 			var gencell = 0
 			
-			var noiseval = mainnoise.get_noise_2d(x,y)
+			
+			var noiseval = mainnoise.get_noise_2d(x+xo,y)
 			var noisevaladd = max(y,min(-y-99,y+101))
 			var anoisevaladd = max(y-1,min(-y-98,y+100))
 			
-			noiseval *= (gnarlnoise.get_noise_1d(x))*120
-			noiseval += continentnoise.get_noise_1d(x)*30
+			noiseval *= (gnarlnoise.get_noise_1d(x+xo))*200
+			noiseval += continentnoise.get_noise_1d(x+xo)*40
 			noiseval += noisevaladd
 			
-			var anoiseval = mainnoise.get_noise_2d(x,y-1)
+			var anoiseval = mainnoise.get_noise_2d(x+xo,y-1)
 			
-			anoiseval *= (gnarlnoise.get_noise_1d(x))*120
-			anoiseval += continentnoise.get_noise_1d(x)*30
+			anoiseval *= (gnarlnoise.get_noise_1d(x+xo))*200
+			anoiseval += continentnoise.get_noise_1d(x+xo)*40
 			anoiseval += anoisevaladd
 			
 			if noiseval > 0: # stone/grass/sand/...
 				gencell = 4 # stone
 				if y < -50 and rand_range(0,1) < 0.02: gencell = 13 # bauxite
-				if lavanoise.get_noise_2d(x,y) > 0.4 - 0.0005*(cy*chunkH): gencell = 14 # large lava
+				if lavanoise.get_noise_2d(x+xo,y) > 0.4 - 0.0005*(cy*chunkH): gencell = 14 # large lava
 				if anoiseval < 0:
 					gencell = 2 # grass
 					#if true:#rand_range(0,1) < 0.1:
@@ -93,8 +96,8 @@ func generate(cx,cy):
 							#set_cell(x,y,5)
 					if y >= -1:
 						gencell = 3 # sand
-				if abs(cavenoise.get_noise_2d(x,y)) < cavethicnoise.get_noise_2d(x,y)*0.15+0.01:
-					gencell = 0
+				if abs(cavenoise.get_noise_2d(x+xo,y)) < cavethicnoise.get_noise_2d(x+xo,y)*0.2+0.05:
+					gencell = 0 # caves
 			elif noiseval < 0: # air/water
 				gencell = 0
 				if y >= 0:
@@ -106,7 +109,7 @@ func generate(cx,cy):
 			if get_cell(x,y) == -1:
 				set_cell(x,y,gencell)
 	for x in range(chunkW*cx,chunkW*(cx+1)):
-		if rand_range(-0.1,1) < treenoise.get_noise_1d(x):
+		if rand_range(-0.1,1) < treenoise.get_noise_1d(x+xo):
 			for y in range(chunkH*cy,chunkH*(cy+1)):
 				if get_cell(x,y) == 2:
 					var top = (y-randi()%6)-5
@@ -152,22 +155,22 @@ func generate(cx,cy):
 						if dist < rand_range(1.5,3.5):
 							set_cell(i,j,25)
 		if chunkH*cy < -50:
-			for y in range(chunkH*cy,chunkH*(cy+1)): # lava
-				if get_cell(x,y) == 4 and rand_range(0,1) < 0.005:
+			for y in range(chunkH*cy,chunkH*(cy+1)): # small lava
+				if get_cell(x,y) == 4 and rand_range(0,1) < 0.0025:
 					for i in range(x-4,x+4):
 						for j in range(y-4,y+4):
 							var dist = abs(x-i) + abs(y-j)
 							if dist < rand_range(1.5,3.5) and get_cell(i,j) == 4:
 								set_cell(i,j,14)
 		for y in range(chunkH*cy,chunkH*(cy+1)): # oil
-			if get_cell(x,y) == 4 and rand_range(0,1) < 0.01*(oilnoise.get_noise_2d(x,y)):
+			if get_cell(x,y) == 4 and rand_range(0,1) < 0.012*(oilnoise.get_noise_2d(x+xo,y))-0.001:
 				for i in range(x-10,x+10):
 					for j in range(y-10,y+10):
 						var dist = abs(x-i) + abs(y-j)
 						if dist < rand_range(7,13):
 							set_cell(i,j,32)
 		for y in range(chunkH*cy,chunkH*(cy+1)): # ????
-			if rand_range(0,1) < 0.00005 and y>100:
+			if rand_range(0,1) < 0.0000001*y:
 				for i in range(x,x+14):
 					for j in range(y,y+15):
 						set_cell(i,j,0)
@@ -304,13 +307,13 @@ func _ready():
 	
 	gnarlnoise.seed = sed+434
 	gnarlnoise.octaves = 5
-	gnarlnoise.period = 500
+	gnarlnoise.period = 300
 	gnarlnoise.persistence = 0.5
 	gnarlnoise.lacunarity = 2
 	
 	continentnoise.seed = sed+222
 	continentnoise.octaves = 5
-	continentnoise.period = 500
+	continentnoise.period = 400
 	continentnoise.persistence = 0.5
 	continentnoise.lacunarity = 2
 	
@@ -328,13 +331,13 @@ func _ready():
 	
 	cavethicnoise.seed = sed+123
 	cavethicnoise.octaves = 7
-	cavethicnoise.period = 200
-	cavethicnoise.persistence = 0.5
+	cavethicnoise.period = 100
+	cavethicnoise.persistence = 0.75
 	cavethicnoise.lacunarity = 2
 	
 	treenoise.seed = sed+321
 	treenoise.octaves = 5
-	treenoise.period = 300
+	treenoise.period = 400
 	treenoise.persistence = 0.5
 	treenoise.lacunarity = 2
 	
@@ -373,7 +376,7 @@ func _physics_process(delta):
 	var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
 	#if Input.is_action_just_pressed("LCLICK") and (not result):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
-	if Input.is_action_just_pressed("RCLICK") and (not result):
+	if Input.is_action_just_pressed("RCLICK") and (not result) and !get_cellv(mxy) in solid:
 		ehitus(mxy)
 	if Input.is_action_just_pressed("LCLICK"):
 		if get_cell(floor(mxy.x),floor(mxy.y)) in [1,14,32] and hud.inventory[hud.select] == 34:
