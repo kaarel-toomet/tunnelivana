@@ -55,6 +55,7 @@ var lamp = Image.new()
 var kuu = Image.new()
 var nafta = Image.new()
 var xmber = Image.new()
+var kuks = Image.new()
 
 var opaused = false
 
@@ -115,12 +116,14 @@ func _ready():
 	kuu.load(impdir + "/none.png")
 	nafta.load(impdir + "/nafta.png")
 	xmber.load(impdir + "/xmber.png")
+	kuks.load(impdir + "/cdoor.png")
 	
 	blocks = [liiv,meri,muru,kast,kivi,lumi,sygavm,puu,kaktus,
 			lmaa,kuusk,tsammal,jungle,tundra,mjxx,akaatsia,puit,
 			kuldp, kollivp, kast2, algae, sibul, sibulseed,
 			pearmansculpt, tuli, savi, psavi, klaas,
-			kirka, mqqk, lamp, kuu, nafta, nafta, xmber, none]
+			kirka, mqqk, lamp, kuu, nafta, nafta, xmber,
+			kuks, kuks, none]
 	#print(tsammal)
 	hotbar = Image.new()
 	hotbar.load(impdir + "/hotbar.png")
@@ -192,41 +195,44 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("craft"):
 		var block = inventory[select]
-		if block == 5:# or block == 10 or block == 12 or block == 15:
+		if block == 5: # log > planks
 			amounts[select] -= 1
 			collect(16)
 			collect(16)
-		if block == 7 or block == 8:
+		if block == 7 or block == 8: # pear/coalbush > health
 			amounts[select] -= 1
 			get_parent().get_node("hullmyts").health += 1
-		if block == 6 and amounts[select] >= 7:
+		if block == 6 and amounts[select] >= 7: # leaves > seed
 			amounts[select] -= 7
 			collect(10)
 		#if block == 13:# or block == 10 or block == 12 or block == 15:
 			#amounts[select] -= 1
 			#collect(12)
-		if block == 16:
+		if block == 16: # wood > box
 			amounts[select] -= 1
 			collect(19)
-		if block == 21:
+		if block == 21: #onion > o.seed
 			amounts[select] -= 1
 			collect(22)
-		if block == 12:
+		if block == 12: # aluminum > pickaxe
 			amounts[select] -= 1
 			collect(28)
-		if block == 28:
+		if block == 28: # pickaxe > sword
 			amounts[select] -= 1
 			collect(29)
-		if block == 29:
+		if block == 29: # sword > bucket
 			amounts[select] -= 1
 			collect(34)
-		if block == 34:
+		if block == 34: # bucket > pickaxe
 			amounts[select] -= 1
 			collect(28)
 		if block == 4 and inventory.has(6) and amounts[inventory.find(6)] >= 3 and amounts[select] >= 5:
-			amounts[select] -= 5
+			amounts[select] -= 5               # pearman s.
 			amounts[inventory.find(6)] -= 3
 			collect(23)
+		if block == 19: # box > door
+			amounts[select] -= 1
+			collect(35)
 	if Input.is_action_just_pressed("yeet") and inventory[select] == 21:
 		amounts[select] -= 1
 		var mxy = get_parent().get_global_mouse_position()#/32

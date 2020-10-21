@@ -25,7 +25,7 @@ var breakpos = Vector2(0,0)
 var breakspd = 5
 var breakspds = [1,1,5,5,10,7,5,5,5,0,1,0,20,15,1,
 				0,7,12,12,10,3,1,1,100,1,7,10,10,
-				1,1,100,200,1,1,1]
+				1,1,100,200,1,1,1,10,1]
 
 # block IDs
 #0:air, 1:water, 2:grass, 3:sand, 4:stone, 5:log, 6:leaves
@@ -110,7 +110,6 @@ func _process(delta):
 		if get_parent().get_node("hud").inventory[min(get_parent().get_node("hud").select,20)] == 28:
 			breakspd = breakspd * 0.1
 		breakspd *= 1+get_parent().difficulty*0.4
-		print(i)
 		if floor(breakprg/breakspd) >= 5:
 			breakprg = 0
 			#print("acese")

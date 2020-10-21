@@ -12,7 +12,7 @@ var sl = 7
 #19:box, 20:algae, 21:onion, 22:onion seed, 23:pearman sculpture
 #24:fire, 25:clay, 26:fired clay, 27:glass, 28:pickaxe, 29:sword, 30:lamp
 
-var opaque = [2,3,4,5,12,13,14,15,16,17,18,19,23,20,25,26,32,33]
+var opaque = [2,3,4,5,12,13,14,15,16,17,18,19,23,20,25,26,32,33,35]
 
 var semiopaque = [1,2,3,4,5,6,9,12,13,14,15,16,17,18,19,20,23,25,26,32,33]
 

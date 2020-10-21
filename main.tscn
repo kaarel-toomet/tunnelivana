@@ -141,7 +141,6 @@ scale = Vector2( 2, 2 )
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( 327684, 15, 0, 327685, 15, 0 )
 script = ExtResource( 5 )
 kuld = ExtResource( 23 )
 
@@ -154,6 +153,7 @@ z_index = 6
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
+tile_data = PoolIntArray( 131069, 0, 0 )
 script = ExtResource( 10 )
 
 [node name="hullmyts" type="KinematicBody2D" parent="."]
