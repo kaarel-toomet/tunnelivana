@@ -8,8 +8,8 @@ var pausemenu = preload("res://pause_menu.tscn")
 
 export var inventory = [28,29,8,4,21,31,-1,-1,-1,-1,
 						-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, -1]
-#export var amounts = [9999,9999,9999,9999,9999,9999,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
-export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
+export var amounts = [9999,9999,9999,9999,9999,9999,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
+#export var amounts = [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0]
 var select = 0
 var empty = 0
 

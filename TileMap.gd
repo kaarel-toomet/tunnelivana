@@ -163,12 +163,19 @@ func generate(cx,cy):
 							if dist < rand_range(1.5,3.5) and get_cell(i,j) == 4:
 								set_cell(i,j,14)
 		for y in range(chunkH*cy,chunkH*(cy+1)): # oil
-			if get_cell(x,y) == 4 and rand_range(0,1) < 0.012*(oilnoise.get_noise_2d(x+xo,y))-0.001:
+			if get_cell(x,y) == 4 and rand_range(0,1) < 0.01*(oilnoise.get_noise_2d(x+xo,y))-0.001:
 				for i in range(x-10,x+10):
 					for j in range(y-10,y+10):
 						var dist = abs(x-i) + abs(y-j)
 						if dist < rand_range(7,13):
 							set_cell(i,j,32)
+		for y in range(chunkH*cy,chunkH*(cy+1)): # water
+			if get_cell(x,y) == 4 and rand_range(0,1) < 0.002:
+				for i in range(x-4,x+4):
+					for j in range(y-4,y+4):
+						var dist = abs(x-i) + abs(y-j)
+						if dist < rand_range(1.5,3.5):
+							set_cell(i,j,1)
 		for y in range(chunkH*cy,chunkH*(cy+1)): # ????
 			if rand_range(0,1) < 0.0000001*y:
 				for i in range(x,x+14):
@@ -200,10 +207,12 @@ func lammutus(pos):
 
 func ehitus(pos):
 	var hud = get_parent().get_node("hud")
-	#print("acese 2 2")
 	if hud.amounts[hud.select] == 0: return
 	pos.x = floor(pos.x)
 	pos.y = floor(pos.y)
+	if !hud.inventory[hud.select] in solid and get_cellv(pos) in [1,14,32]: return
+		
+	if get_cellv(pos) in solid: return
 	#print("acese 2")
 	set_cellv(pos,hud.inventory[hud.select])
 	hud.amounts[hud.select] -= 1
@@ -376,7 +385,7 @@ func _physics_process(delta):
 	var result = space_state.intersect_ray(hxy+Vector2(16,16), mxy*32-(mxy*32-hxy).normalized()*30, [parent.get_node("hullmyts")])
 	#if Input.is_action_just_pressed("LCLICK") and (not result):
 		#emit_signal("lammutus",get_cell(floor(mxy[0]),floor(mxy[1])))
-	if Input.is_action_just_pressed("RCLICK") and (not result) and !get_cellv(mxy) in solid:
+	if Input.is_action_just_pressed("RCLICK") and (not result):
 		ehitus(mxy)
 	if Input.is_action_just_pressed("LCLICK"):
 		if get_cell(floor(mxy.x),floor(mxy.y)) in [1,14,32] and hud.inventory[hud.select] == 34:
